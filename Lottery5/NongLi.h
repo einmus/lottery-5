@@ -1,0 +1,1 @@
+void GetDayOf(PSYSTEMTIME pSt, TCHAR* pBuffer);

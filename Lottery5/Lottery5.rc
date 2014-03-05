@@ -1,0 +1,423 @@
+// Microsoft Visual C++ generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#ifndef APSTUDIO_INVOKED
+#include "targetver.h"
+#endif
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// Chinese (P.R.C.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_CHS)
+#ifdef _WIN32
+LANGUAGE LANG_CHINESE, SUBLANG_CHINESE_SIMPLIFIED
+#pragma code_page(936)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE 
+BEGIN
+    "#ifndef APSTUDIO_INVOKED\r\n"
+    "#include ""targetver.h""\r\n"
+    "#endif\r\n"
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE 
+BEGIN
+    "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_CHS)\r\n"
+    "LANGUAGE 4, 2\r\n"
+    "#pragma code_page(936)\r\n"
+    "#include ""res\\Lottery5.rc2""  // 非 Microsoft Visual C++ 编辑的资源\r\n"
+    "#include ""l.CHS\\afxres.rc""      // 标准组件\r\n"
+    "#endif\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDR_MAINFRAME           ICON                    "res\\Lottery5.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_ABOUTBOX DIALOGEX 0, 0, 170, 62
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "关于 Lottery5"
+FONT 9, "MS Shell Dlg", 0, 0, 0x1
+BEGIN
+    ICON            IDR_MAINFRAME,IDC_STATIC,14,14,21,20
+    LTEXT           "Lottery5，1.0 版",IDC_STATIC,42,14,114,8,SS_NOPREFIX
+    LTEXT           "Copyright (C) 2011",IDC_STATIC,42,26,114,8
+    DEFPUSHBUTTON   "确定",IDOK,113,41,50,14,WS_GROUP
+END
+
+IDD_LOTTERY5_DIALOG DIALOGEX 0, 0, 710, 411
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+EXSTYLE WS_EX_APPWINDOW
+FONT 9, "MS Shell Dlg", 0, 0, 0x1
+BEGIN
+    EDITTEXT        IDC_YAO11,77,134,84,12,ES_AUTOHSCROLL | ES_NUMBER
+    EDITTEXT        IDC_YAO12,77,151,84,12,ES_AUTOHSCROLL | ES_NUMBER
+    EDITTEXT        IDC_YAO13,77,209,84,12,ES_AUTOHSCROLL | ES_NUMBER
+    EDITTEXT        IDC_YAO14,77,226,84,12,ES_AUTOHSCROLL | ES_NUMBER
+    EDITTEXT        IDC_YAO15,77,281,84,12,ES_AUTOHSCROLL | ES_NUMBER
+    EDITTEXT        IDC_YAO16,77,298,84,12,ES_AUTOHSCROLL | ES_NUMBER
+    PUSHBUTTON      "->",IDC_BUTTON1,201,197,27,23
+    CONTROL         "",IDC_DATETIMEPICKER1,"SysDateTimePick32",DTS_RIGHTALIGN | DTS_UPDOWN | 0x8,172,19,62,14
+    CONTROL         "",IDC_DATETIMEPICKER4,"SysDateTimePick32",DTS_RIGHTALIGN,68,19,62,14
+    LTEXT           "公历日期：",IDC_STATIC,19,19,39,14,SS_CENTERIMAGE
+    LTEXT           "时间：",IDC_STATIC,140,19,22,14,SS_CENTERIMAGE
+    LTEXT           "3D",IDC_STATIC,67,55,13,12,SS_CENTERIMAGE
+    EDITTEXT        IDC_EDIT3,80,55,35,12,ES_AUTOHSCROLL | NOT WS_TABSTOP
+    LTEXT           "期：",IDC_STATIC,123,55,14,12,SS_CENTERIMAGE
+    GROUPBOX        "",IDC_STATIC,12,9,225,29
+    EDITTEXT        IDC_EDIT2,254,133,52,22,ES_CENTER | ES_AUTOHSCROLL | ES_READONLY | NOT WS_BORDER | NOT WS_TABSTOP
+    EDITTEXT        IDC_EDIT5,317,221,52,22,ES_CENTER | ES_AUTOHSCROLL | ES_READONLY | NOT WS_BORDER | NOT WS_TABSTOP
+    CONTROL         "",IDC_STATIC0,"Static",SS_BITMAP,278,162,13,12
+    CONTROL         "",IDC_STATIC2,"Static",SS_BITMAP,279,292,13,12
+    EDITTEXT        IDC_EDIT7,391,144,127,89,ES_MULTILINE | ES_READONLY | NOT WS_TABSTOP
+    EDITTEXT        IDC_EDIT9,520,144,127,89,ES_MULTILINE | ES_READONLY | NOT WS_TABSTOP
+    EDITTEXT        IDC_EDIT11,253,84,296,23,ES_AUTOHSCROLL | ES_READONLY | NOT WS_TABSTOP
+    EDITTEXT        IDC_TIMEBOX,253,31,392,23,ES_AUTOHSCROLL | ES_READONLY | NOT WS_TABSTOP
+    GROUPBOX        "1",IDC_STATIC,245,124,447,126
+    EDITTEXT        IDC_EDIT14,254,264,52,22,ES_CENTER | ES_AUTOHSCROLL | ES_READONLY | NOT WS_BORDER | NOT WS_TABSTOP
+    EDITTEXT        IDC_EDIT15,317,353,52,22,ES_CENTER | ES_AUTOHSCROLL | ES_READONLY | NOT WS_BORDER | NOT WS_TABSTOP
+    EDITTEXT        IDC_EDIT16,391,268,127,89,ES_MULTILINE | ES_READONLY | NOT WS_TABSTOP
+    EDITTEXT        IDC_EDIT17,520,268,127,89,ES_MULTILINE | ES_READONLY | NOT WS_TABSTOP
+    GROUPBOX        "2",IDC_STATIC,245,254,447,115
+    EDITTEXT        IDC_SCORE1,659,154,25,31,ES_MULTILINE | ES_AUTOHSCROLL | ES_READONLY | NOT WS_TABSTOP
+    EDITTEXT        IDC_RESULT1,659,190,25,21,ES_AUTOHSCROLL | ES_READONLY | NOT WS_TABSTOP
+    EDITTEXT        IDC_SCORE2,659,285,25,31,ES_MULTILINE | ES_AUTOHSCROLL | ES_READONLY | NOT WS_TABSTOP
+    EDITTEXT        IDC_RESULT2,659,320,25,21,ES_AUTOHSCROLL | ES_READONLY | NOT WS_TABSTOP
+    PUSHBUTTON      "->",IDC_GROUPADD,629,83,16,21,NOT WS_TABSTOP
+    PUSHBUTTON      "<-",IDC_GROUPSUBSTRACT,560,83,16,21,NOT WS_TABSTOP
+    EDITTEXT        IDC_GROUP,583,83,16,21,ES_CENTER | ES_AUTOHSCROLL | ES_READONLY | NOT WS_TABSTOP
+    CTEXT           "组",IDC_ZU,606,83,16,21,SS_CENTERIMAGE
+    CONTROL         "",IDC_STATIC1,"Static",SS_BITMAP,278,185,13,12
+    CONTROL         "",IDC_STATIC3,"Static",SS_BITMAP,279,316,13,12
+    CONTROL         "",IDC_STATIC4,"Static",SS_BITMAP,334,162,13,12
+    CONTROL         "",IDC_STATIC5,"Static",SS_BITMAP,334,185,13,12
+    CONTROL         "",IDC_STATIC6,"Static",SS_BITMAP,335,292,13,12
+    CONTROL         "",IDC_STATIC7,"Static",SS_BITMAP,335,316,13,12
+    CTEXT           "",IDC_STATIC11,315,161,9,8,SS_CENTERIMAGE | WS_BORDER
+    CTEXT           "",IDC_STATIC12,315,169,9,8,SS_CENTERIMAGE | WS_BORDER
+    CTEXT           "",IDC_STATIC13,315,177,9,8,SS_CENTERIMAGE | WS_BORDER
+    CTEXT           "",IDC_STATIC14,315,185,9,8,SS_CENTERIMAGE | WS_BORDER
+    CTEXT           "",IDC_STATIC15,315,193,9,8,SS_CENTERIMAGE | WS_BORDER
+    CTEXT           "",IDC_STATIC16,315,201,9,8,SS_CENTERIMAGE | WS_BORDER
+    CTEXT           "",IDC_STATIC17,316,292,9,8,SS_CENTERIMAGE | WS_BORDER
+    CTEXT           "",IDC_STATIC18,316,300,9,8,SS_CENTERIMAGE | WS_BORDER
+    CTEXT           "",IDC_STATIC19,316,308,9,8,SS_CENTERIMAGE | WS_BORDER
+    CTEXT           "",IDC_STATIC20,316,316,9,8,SS_CENTERIMAGE | WS_BORDER
+    CTEXT           "",IDC_STATIC21,316,324,9,8,SS_CENTERIMAGE | WS_BORDER
+    CTEXT           "",IDC_STATIC22,316,332,9,8,SS_CENTERIMAGE | WS_BORDER
+    LTEXT           "的可能性：",IDC_STATIC,138,114,38,12,SS_CENTERIMAGE
+    LTEXT           "位是",IDC_STATIC,75,114,18,12,SS_CENTERIMAGE
+    COMBOBOX        IDC_ADJECT1,99,114,31,16,CBS_DROPDOWN | WS_VSCROLL
+    GROUPBOX        "预测第1组：",IDC_STATIC,19,104,159,68
+    LTEXT           "爻卦1：",IDC_STATIC,38,134,31,10,SS_CENTERIMAGE
+    COMBOBOX        IDC_WEI1,38,114,31,16,CBS_DROPDOWN | WS_VSCROLL
+    LTEXT           "爻卦2：",IDC_STATIC,38,151,31,10,SS_CENTERIMAGE
+    LTEXT           "的可能性：",IDC_STATIC,138,189,38,12,SS_CENTERIMAGE
+    LTEXT           "位是",IDC_STATIC,75,189,18,12,SS_CENTERIMAGE
+    COMBOBOX        IDC_ADJECT2,100,189,31,16,CBS_DROPDOWN | WS_VSCROLL
+    GROUPBOX        "预测第2组：",IDC_STATIC,19,178,159,68
+    LTEXT           "爻卦1：",IDC_STATIC,38,209,31,10,SS_CENTERIMAGE
+    COMBOBOX        IDC_WEI2,38,189,31,16,CBS_DROPDOWN | WS_VSCROLL
+    LTEXT           "爻卦2：",IDC_STATIC,38,226,31,10,SS_CENTERIMAGE
+    LTEXT           "的可能性：",IDC_STATIC,138,261,38,12,SS_CENTERIMAGE
+    LTEXT           "位是",IDC_STATIC,75,261,18,12,SS_CENTERIMAGE
+    COMBOBOX        IDC_ADJECT3,100,261,31,16,CBS_DROPDOWN | WS_VSCROLL
+    GROUPBOX        "预测第3组：",IDC_STATIC,19,250,159,68
+    LTEXT           "爻卦1：",IDC_STATIC,38,281,31,10,SS_CENTERIMAGE
+    COMBOBOX        IDC_WEI3,38,261,31,16,CBS_DROPDOWN | WS_VSCROLL
+    LTEXT           "爻卦2：",IDC_STATIC,38,298,31,10,SS_CENTERIMAGE
+    CTEXT           "(",IDC_ZU2,14,77,16,21,SS_CENTERIMAGE
+    CTEXT           ")",IDC_ZU3,108,77,16,21,SS_CENTERIMAGE
+    CTEXT           "[",IDC_ZU4,124,77,16,21,SS_CENTERIMAGE
+    CTEXT           "]",IDC_ZU5,171,77,16,21,SS_CENTERIMAGE
+    CTEXT           ",",IDC_ZU6,61,77,16,21,SS_CENTERIMAGE
+    COMBOBOX        IDC_CASE1,30,77,31,16,CBS_DROPDOWN | WS_VSCROLL
+    COMBOBOX        IDC_CASE2,77,77,31,16,CBS_DROPDOWN | WS_VSCROLL
+    COMBOBOX        IDC_CASE3,140,77,31,16,CBS_DROPDOWN | WS_VSCROLL
+    PUSHBUTTON      "C",IDC_BUTTONCLEAR,201,163,27,23
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 1,0,0,1
+ PRODUCTVERSION 1,0,0,1
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x4L
+ FILETYPE 0x1L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "080403a8"
+        BEGIN
+            VALUE "CompanyName", "TODO: <公司名>"
+            VALUE "FileDescription", "TODO: <文件说明>"
+            VALUE "FileVersion", "1.0.0.1"
+            VALUE "InternalName", "Lottery5.exe"
+            VALUE "LegalCopyright", "TODO: (C) <公司名>。保留所有权利。"
+            VALUE "OriginalFilename", "Lottery5.exe"
+            VALUE "ProductName", "TODO: <产品名>"
+            VALUE "ProductVersion", "1.0.0.1"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x804, 936
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO 
+BEGIN
+    IDD_ABOUTBOX, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 163
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 55
+    END
+
+    IDD_LOTTERY5_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 5
+        RIGHTMARGIN, 703
+        TOPMARGIN, 9
+        BOTTOMMARGIN, 405
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDB_BITMAP1             BITMAP                  "res\\bitmap1.bmp"
+IDB_BITMAP2             BITMAP                  "res\\bitmap2.bmp"
+IDB_BITMAP3             BITMAP                  "res\\bitmap3.bmp"
+IDB_BITMAP4             BITMAP                  "res\\bitmap4.bmp"
+IDB_BITMAP5             BITMAP                  "res\\bitmap5.bmp"
+IDB_BITMAP6             BITMAP                  "res\\bitmap6.bmp"
+IDB_BITMAP7             BITMAP                  "res\\bitmap7.bmp"
+IDB_BITMAP8             BITMAP                  "res\\bitmap8.bmp"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog Info
+//
+
+IDD_LOTTERY5_DIALOG DLGINIT
+BEGIN
+    IDC_ADJECT1, 0x403, 3, 0
+0xe6c6, "\000" 
+    IDC_ADJECT1, 0x403, 3, 0
+0xbcc5, "\000" 
+    IDC_ADJECT1, 0x403, 3, 0
+0xf3b4, "\000" 
+    IDC_ADJECT1, 0x403, 3, 0
+0xa1d0, "\000" 
+    IDC_WEI1, 0x403, 3, 0
+0xf6b8, "\000" 
+    IDC_WEI1, 0x403, 3, 0
+0xaeca, "\000" 
+    IDC_WEI1, 0x403, 3, 0
+0xd9b0, "\000" 
+    IDC_ADJECT2, 0x403, 3, 0
+0xe6c6, "\000" 
+    IDC_ADJECT2, 0x403, 3, 0
+0xbcc5, "\000" 
+    IDC_ADJECT2, 0x403, 3, 0
+0xf3b4, "\000" 
+    IDC_ADJECT2, 0x403, 3, 0
+0xa1d0, "\000" 
+    IDC_WEI2, 0x403, 3, 0
+0xf6b8, "\000" 
+    IDC_WEI2, 0x403, 3, 0
+0xaeca, "\000" 
+    IDC_WEI2, 0x403, 3, 0
+0xd9b0, "\000" 
+    IDC_ADJECT3, 0x403, 3, 0
+0xe6c6, "\000" 
+    IDC_ADJECT3, 0x403, 3, 0
+0xbcc5, "\000" 
+    IDC_ADJECT3, 0x403, 3, 0
+0xf3b4, "\000" 
+    IDC_ADJECT3, 0x403, 3, 0
+0xa1d0, "\000" 
+    IDC_WEI3, 0x403, 3, 0
+0xf6b8, "\000" 
+    IDC_WEI3, 0x403, 3, 0
+0xaeca, "\000" 
+    IDC_WEI3, 0x403, 3, 0
+0xd9b0, "\000" 
+    IDC_CASE1, 0x403, 3, 0
+0xd3d7, "\000" 
+    IDC_CASE1, 0x403, 3, 0
+0xf3b3, "\000" 
+    IDC_CASE1, 0x403, 3, 0
+0xfad2, "\000" 
+    IDC_CASE1, 0x403, 3, 0
+0xaec3, "\000" 
+    IDC_CASE1, 0x403, 3, 0
+0xbdb3, "\000" 
+    IDC_CASE1, 0x403, 3, 0
+0xc8cb, "\000" 
+    IDC_CASE1, 0x403, 3, 0
+0xe7ce, "\000" 
+    IDC_CASE1, 0x403, 3, 0
+0xb4ce, "\000" 
+    IDC_CASE1, 0x403, 3, 0
+0xeac9, "\000" 
+    IDC_CASE1, 0x403, 3, 0
+0xcfd3, "\000" 
+    IDC_CASE1, 0x403, 3, 0
+0xe7d0, "\000" 
+    IDC_CASE1, 0x403, 3, 0
+0xa5ba, "\000" 
+    IDC_CASE2, 0x403, 3, 0
+0xd3d7, "\000" 
+    IDC_CASE2, 0x403, 3, 0
+0xf3b3, "\000" 
+    IDC_CASE2, 0x403, 3, 0
+0xfad2, "\000" 
+    IDC_CASE2, 0x403, 3, 0
+0xaec3, "\000" 
+    IDC_CASE2, 0x403, 3, 0
+0xbdb3, "\000" 
+    IDC_CASE2, 0x403, 3, 0
+0xc8cb, "\000" 
+    IDC_CASE2, 0x403, 3, 0
+0xe7ce, "\000" 
+    IDC_CASE2, 0x403, 3, 0
+0xb4ce, "\000" 
+    IDC_CASE2, 0x403, 3, 0
+0xeac9, "\000" 
+    IDC_CASE2, 0x403, 3, 0
+0xcfd3, "\000" 
+    IDC_CASE2, 0x403, 3, 0
+0xe7d0, "\000" 
+    IDC_CASE2, 0x403, 3, 0
+0xa5ba, "\000" 
+    IDC_CASE3, 0x403, 3, 0
+0xd3d7, "\000" 
+    IDC_CASE3, 0x403, 3, 0
+0xf3b3, "\000" 
+    IDC_CASE3, 0x403, 3, 0
+0xfad2, "\000" 
+    IDC_CASE3, 0x403, 3, 0
+0xaec3, "\000" 
+    IDC_CASE3, 0x403, 3, 0
+0xbdb3, "\000" 
+    IDC_CASE3, 0x403, 3, 0
+0xc8cb, "\000" 
+    IDC_CASE3, 0x403, 3, 0
+0xe7ce, "\000" 
+    IDC_CASE3, 0x403, 3, 0
+0xb4ce, "\000" 
+    IDC_CASE3, 0x403, 3, 0
+0xeac9, "\000" 
+    IDC_CASE3, 0x403, 3, 0
+0xcfd3, "\000" 
+    IDC_CASE3, 0x403, 3, 0
+0xe7d0, "\000" 
+    IDC_CASE3, 0x403, 3, 0
+0xa5ba, "\000" 
+    0
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE 
+BEGIN
+    IDS_ABOUTBOX            "关于 Lottery5(&A)..."
+END
+
+#endif    // Chinese (P.R.C.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#define _AFX_NO_SPLITTER_RESOURCES
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_CHS)
+LANGUAGE 4, 2
+#pragma code_page(936)
+#include "res\Lottery5.rc2"  // 非 Microsoft Visual C++ 编辑的资源
+#include "l.CHS\afxres.rc"      // 标准组件
+#endif
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

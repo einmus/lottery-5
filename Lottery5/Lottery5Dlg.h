@@ -62,4 +62,5 @@ public:
     afx_msg void OnCbnSelchangeCase2(){if(bInitialResult)OnBnClickedButton1();}
     afx_msg void OnCbnSelchangeCase3(){if(bInitialResult)OnBnClickedButton1();}
     afx_msg void OnBnClickedButtonclear();
+	afx_msg void OnBnClickedButtonrandom();
 };

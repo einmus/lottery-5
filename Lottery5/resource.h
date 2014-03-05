@@ -110,6 +110,8 @@
 #define IDC_ZU4                         1080
 #define IDC_ZU5                         1081
 #define IDC_ZU6                         1082
+#define IDC_BUTTON4                     1083
+#define IDC_BUTTONRANDOM                1083
 #define IDC_YAO11                       1101
 #define IDC_YAO12                       1102
 #define IDC_YAO13                       1103
@@ -123,7 +125,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        137
 #define _APS_NEXT_COMMAND_VALUE         32771
-#define _APS_NEXT_CONTROL_VALUE         1073
+#define _APS_NEXT_CONTROL_VALUE         1084
 #define _APS_NEXT_SYMED_VALUE           104
 #endif
 #endif

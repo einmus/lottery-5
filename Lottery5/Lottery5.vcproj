@@ -45,6 +45,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
+				AdditionalIncludeDirectories="../../jsoncpp-src-0.5.0\include\json"
 				PreprocessorDefinitions="WIN32;_WINDOWS;_DEBUG"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -67,7 +68,9 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
+				AdditionalDependencies="json_vc71_libmtd.lib"
 				LinkIncremental="2"
+				AdditionalLibraryDirectories="../../jsoncpp-src-0.5.0\build\vs71\debug\lib_json"
 				GenerateDebugInformation="true"
 				SubSystem="2"
 				TargetMachine="1"

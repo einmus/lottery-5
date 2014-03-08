@@ -26,6 +26,7 @@
 #define IDC_EDIT2                       1009
 #define IDC_BUTTON1                     1010
 #define IDC_EDIT3                       1011
+#define IDC_EDITISSUE1                  1011
 #define IDC_EDIT5                       1012
 #define IDC_EDIT7                       1013
 #define IDC_EDIT9                       1014
@@ -110,7 +111,6 @@
 #define IDC_ZU4                         1080
 #define IDC_ZU5                         1081
 #define IDC_ZU6                         1082
-#define IDC_BUTTON4                     1083
 #define IDC_BUTTONRANDOM                1083
 #define IDC_YAO11                       1101
 #define IDC_YAO12                       1102

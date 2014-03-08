@@ -47,6 +47,10 @@ private:
     UINT nCurrDisplayGroup;
     CBitmap m_Gua[8];
     int bInitialResult;
+	enum SOURCEMODE {
+		ONLINE_DOWNLOAD,
+		LOCAL_INPUT
+	} m_SourceMode;
 public:
     afx_msg void OnDestroy();
     afx_msg void OnBnClickedGroupadd();

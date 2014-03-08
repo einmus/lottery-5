@@ -51,6 +51,8 @@ private:
 		ONLINE_DOWNLOAD,
 		LOCAL_INPUT
 	} m_SourceMode;
+	Json::Value theTarget;	// current in process target
+	Json::Value theRecords; // all records of current session
 public:
     afx_msg void OnDestroy();
     afx_msg void OnBnClickedGroupadd();
@@ -67,4 +69,6 @@ public:
     afx_msg void OnCbnSelchangeCase3(){if(bInitialResult)OnBnClickedButton1();}
     afx_msg void OnBnClickedButtonclear();
 	afx_msg void OnBnClickedButtonrandom();
+	afx_msg void OnBnClickedButtongetonline();
+	afx_msg void OnBnClickedButtonmark();
 };

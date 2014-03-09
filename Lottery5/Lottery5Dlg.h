@@ -52,7 +52,9 @@ private:
 		LOCAL_INPUT
 	} m_SourceMode;
 	Json::Value theTarget;	// current in process target
+	unsigned int nLoopCount; // current serial id
 	Json::Value theRecords; // all records of current session
+	char * m_pDownloadedBuffer; // the downloaded buffer
 public:
     afx_msg void OnDestroy();
     afx_msg void OnBnClickedGroupadd();

@@ -34,6 +34,9 @@
 #define IDC_TIMEBOX                     1016
 #define IDC_BUTTON3                     1017
 #define IDC_BUTTONCLEAR                 1017
+#define IDC_EDITISSUE2                  1018
+#define IDC_EDIT13                      1019
+#define IDC_EDITINFO                    1019
 #define IDC_EDIT14                      1021
 #define IDC_EDIT15                      1022
 #define IDC_COMBO2                      1023
@@ -113,7 +116,6 @@
 #define IDC_ZU6                         1082
 #define IDC_BUTTONRANDOM                1083
 #define IDC_BUTTONGETONLINE             1084
-#define IDC_BUTTONGETONLINE2            1085
 #define IDC_BUTTONMARK                  1085
 #define IDC_YAO11                       1101
 #define IDC_YAO12                       1102

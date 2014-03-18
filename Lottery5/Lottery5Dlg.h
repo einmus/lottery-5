@@ -47,14 +47,8 @@ private:
     UINT nCurrDisplayGroup;
     CBitmap m_Gua[8];
     int bInitialResult;
-	enum SOURCEMODE {
-		ONLINE_DOWNLOAD,
-		LOCAL_INPUT
-	} m_SourceMode;
-	Json::Value theTarget;	// current in process target
-	unsigned int nLoopCount; // current serial id
-	Json::Value theRecords; // all records of current session
-	char * m_pDownloadedBuffer; // the downloaded buffer
+
+
 public:
     afx_msg void OnDestroy();
     afx_msg void OnBnClickedGroupadd();
@@ -73,4 +67,5 @@ public:
 	afx_msg void OnBnClickedButtonrandom();
 	afx_msg void OnBnClickedButtongetonline();
 	afx_msg void OnBnClickedButtonmark();
+	afx_msg void OnBnClickedButtonbirdview();
 };

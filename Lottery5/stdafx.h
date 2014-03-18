@@ -37,12 +37,15 @@
 
 #include <afxcontrolbars.h>     // 功能区和控件条的 MFC 支持
 
+#include <afxinet.h> // to utilize http connection
 #include "json.h" // add json parsing
+#include <vector>
+using namespace std;
 
-
-
-
-
+enum SOURCEMODE {
+	ONLINE_DOWNLOAD,
+	LOCAL_INPUT
+};
 
 
 

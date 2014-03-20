@@ -33,6 +33,8 @@ void BirdView::DoDataExchange(CDataExchange* pDX)
 
 
 BEGIN_MESSAGE_MAP(BirdView, CDialog)
+	ON_CBN_EDITCHANGE(IDC_COMBOISSUE, &BirdView::OnCbnEditchangeComboissue)
+	ON_CBN_SELCHANGE(IDC_COMBOISSUE, &BirdView::OnCbnSelchangeComboissue)
 END_MESSAGE_MAP()
 
 
@@ -70,32 +72,103 @@ BOOL BirdView::OnInitDialog()
 		g_SourceMode = ONLINE_DOWNLOAD;
 	}
 
+
 	// step 2: analyze it
+	TCHAR theString[256]; // set window text can be happy
 	for(unsigned int i=0; i<theRecords.size();i++) {
-		// b. issue
 		unsigned int j;
+		// a. people
+		for(j=0; j<m_People.size();j++) {
+			MultiByteToWideChar(CP_UTF8, NULL, theRecords[i].get("userName", "NA").asCString(), -1, theString, 256);
+			if(m_People[j] == theString) 
+				break;
+		}
+		if (j == m_People.size())
+			m_People.push_back(CString(theString));
+		// b. issue
 		for(j=0; j<m_Issues.size();j++)
-			if(m_Issues[j].first == theRecords[i].get("actionNumber1", "0000000").asCString()) break;
+			if(m_Issues[j] == theRecords[i].get("actionNumber1", "0000000").asCString()) break;
 		if (j == m_Issues.size())
-			m_Issues.push_back(make_pair(CString(theRecords[i].get("actionNumber1", "0000000").asCString()), theRecords[i]));
+			m_Issues.push_back(CString(theRecords[i].get("actionNumber1", "0000000").asCString()));
 
 		for(j=0; j<m_Issues.size();j++)
-			if(m_Issues[j].first == theRecords[i].get("actionNumber2", "0000000").asCString()) break;
+			if(m_Issues[j] == theRecords[i].get("actionNumber2", "0000000").asCString()) break;
 		if (j == m_Issues.size())
-			m_Issues.push_back(make_pair(CString(theRecords[i].get("actionNumber2", "0000000").asCString()), theRecords[i]));
+			m_Issues.push_back(CString(theRecords[i].get("actionNumber2", "0000000").asCString()));
 
 	}
+
 	// we have enough issues, let's display them
 	CComboBox box;
 	box.Attach(GetDlgItem(IDC_COMBOISSUE)->m_hWnd);
 	box.SetCurSel(0);
-	for (unsigned int i=0; i < m_Issues.size(); i++)
-	{
-		box.InsertString(i, m_Issues[i].first);
+	for (unsigned int i=0; i < m_Issues.size(); i++) {
+		box.InsertString(i, m_Issues[i]);
+	}
+	box.Detach();
+
+	box.Attach(GetDlgItem(IDC_COMBOPEOPLE)->m_hWnd);
+	box.SetCurSel(0);
+	for (unsigned int i=0; i < m_People.size(); i++) {
+		box.InsertString(i, m_People[i]);
 	}
 	box.Detach();
 
 
+
 	return TRUE;  // return TRUE unless you set the focus to a control
 	// EXCEPTION: OCX Property Pages should return FALSE
+}
+
+void BirdView::OnCbnEditchangeComboissue()
+{
+}
+
+void BirdView::OnCbnSelchangeComboissue()
+{
+	CListBox bigbox;
+	bigbox.Attach(GetDlgItem(IDC_LISTSHEET)->m_hWnd);
+	bigbox.ResetContent();
+	// get the selected index (n) for the combo box
+	int n = 0;	
+	TCHAR theString[256]; // set window text can be happy
+	CComboBox box;
+	box.Attach(GetDlgItem(IDC_COMBOISSUE)->m_hWnd);
+	n = box.GetCurSel();
+	box.Detach();
+	// update content of the sheet
+	for (int i = 0; i < theRecords.size(); i++) {
+		CString s;
+		// because issues will not be the same,
+		// so we will NOT compare again if we found one match
+		if(m_Issues[n] == theRecords[i].get("actionNumber1", "0000000").asCString()) {
+			s += theRecords[i].get("actionNumber1", "0000000").asCString();
+			s += _T("期\t");
+			MultiByteToWideChar(CP_UTF8, NULL, theRecords[i].get("userName", "NA").asCString(), -1, theString, 256);
+			s += theString;
+			s += _T("预测\t奇偶\t");
+			s += theRecords[i].get("dataOne1", "0000000").asCString();
+			s += _T("小大\t");
+			s += theRecords[i].get("dataOne2", "0000000").asCString();
+			s += _T("结果\t");
+			// TODO: 结果
+			bigbox.AddString(s);
+			continue;
+		}
+		if(m_Issues[n] == theRecords[i].get("actionNumber2", "0000000").asCString()) {
+			s += theRecords[i].get("actionNumber2", "0000000").asCString();
+			s += _T("期\t");
+			MultiByteToWideChar(CP_UTF8, NULL, theRecords[i].get("userName", "NA").asCString(), -1, theString, 256);
+			s += theString;
+			s += _T("预测\t奇偶\t");
+			s += theRecords[i].get("dataTwo1", "0000000").asCString();
+			s += _T("小大\t");
+			s += theRecords[i].get("dataTwo2", "0000000").asCString();
+			s += _T("结果\t");
+			// TODO: 结果
+			bigbox.AddString(s);
+			continue;
+		}
+	}
+	bigbox.Detach();
 }

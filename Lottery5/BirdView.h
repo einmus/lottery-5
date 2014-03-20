@@ -21,6 +21,9 @@ public:
 	virtual BOOL OnInitDialog();
 
 private:
-	//vector<CString, Json::Value> m_People;
-	vector<pair<CString, Json::Value>> m_Issues;
+	vector<CString> m_People;
+	vector<CString> m_Issues;
+public:
+	afx_msg void OnCbnEditchangeComboissue();
+	afx_msg void OnCbnSelchangeComboissue();
 };

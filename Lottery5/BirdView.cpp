@@ -11,6 +11,7 @@ extern unsigned int nLoopCount; // current serial id
 extern Json::Value theRecords; // all records of current session
 extern char * m_pDownloadedBuffer; // the downloaded buffer
 extern SOURCEMODE g_SourceMode;
+extern const TCHAR  gcURL[256]; // the 256 is a random number
 
 // BirdView dialog
 
@@ -33,8 +34,9 @@ void BirdView::DoDataExchange(CDataExchange* pDX)
 
 
 BEGIN_MESSAGE_MAP(BirdView, CDialog)
-	ON_CBN_EDITCHANGE(IDC_COMBOISSUE, &BirdView::OnCbnEditchangeComboissue)
-	ON_CBN_SELCHANGE(IDC_COMBOISSUE, &BirdView::OnCbnSelchangeComboissue)
+	ON_LBN_DBLCLK(IDC_LISTSHEET, &BirdView::OnLbnDblclkListsheet)
+	ON_LBN_SELCHANGE(IDC_LISTISSUE, &BirdView::OnLbnSelchangeListissue)
+	ON_LBN_SELCHANGE(IDC_LISTPEOPLE, &BirdView::OnLbnSelchangeListpeople)
 END_MESSAGE_MAP()
 
 
@@ -43,13 +45,19 @@ END_MESSAGE_MAP()
 BOOL BirdView::OnInitDialog()
 {
 	CDialog::OnInitDialog();
-
+	// step 0
+	m_UNIfont.CreatePointFont(160, _T("宋体"));
+	CWnd curritem;
+	curritem.Attach(GetDlgItem(IDC_LISTSHEET)->m_hWnd);curritem.SetFont(&m_UNIfont, FALSE);curritem.Detach();
+	curritem.Attach(GetDlgItem(IDC_LISTISSUE)->m_hWnd);curritem.SetFont(&m_UNIfont, FALSE);curritem.Detach();
+	curritem.Attach(GetDlgItem(IDC_LISTPEOPLE)->m_hWnd);curritem.SetFont(&m_UNIfont, FALSE);curritem.Detach();
 	// TODO:  Add extra initialization here
+
 	// step 1: download data
 	if(g_SourceMode != ONLINE_DOWNLOAD) {// fetch online data only once
 		CInternetSession theSession;
 		// use pageSize parameter to grab whole database
-		CHttpFile* theContent = (CHttpFile*)theSession.OpenURL(_T("http://115.28.141.187/TicketManager/recordAction!searchTicket.action?pageSize=10000"));
+		CHttpFile* theContent = (CHttpFile*)theSession.OpenURL(gcURL);
 		CString str;
 		theContent->QueryInfo(HTTP_QUERY_CONTENT_LENGTH, str);
 		size_t theContentLength = _ttoi(LPCTSTR(str));
@@ -75,39 +83,51 @@ BOOL BirdView::OnInitDialog()
 
 	// step 2: analyze it
 	TCHAR theString[256]; // set window text can be happy
+	memset(theString, 0, sizeof(theString));
 	for(unsigned int i=0; i<theRecords.size();i++) {
-		unsigned int j;
+		bool f = false;
 		// a. people
-		for(j=0; j<m_People.size();j++) {
+		for(unsigned int j = 0; j < m_People.size();j++) {
 			MultiByteToWideChar(CP_UTF8, NULL, theRecords[i].get("userName", "NA").asCString(), -1, theString, 256);
-			if(m_People[j] == theString) 
+			if(m_People[j] == theString) {
+				f = true;
 				break;
+			}
 		}
-		if (j == m_People.size())
-			m_People.push_back(CString(theString));
+		// for i = 0 case
+		if(i == 0) MultiByteToWideChar(CP_UTF8, NULL, theRecords[0].get("userName", "NA").asCString(), -1, theString, 256);
+		if (!f) m_People.push_back(CString(theString));
 		// b. issue
-		for(j=0; j<m_Issues.size();j++)
-			if(m_Issues[j] == theRecords[i].get("actionNumber1", "0000000").asCString()) break;
-		if (j == m_Issues.size())
-			m_Issues.push_back(CString(theRecords[i].get("actionNumber1", "0000000").asCString()));
+		f = false;
+		for(unsigned int j=0; j<m_Issues.size();j++) {
+			if(m_Issues[j] == theRecords[i].get("actionNumber1", "0000000").asCString())  {
+				f = true;
+				break;
+			}
+		}
+		if (!f) m_Issues.push_back(CString(theRecords[i].get("actionNumber1", "0000000").asCString()));
 
-		for(j=0; j<m_Issues.size();j++)
-			if(m_Issues[j] == theRecords[i].get("actionNumber2", "0000000").asCString()) break;
-		if (j == m_Issues.size())
-			m_Issues.push_back(CString(theRecords[i].get("actionNumber2", "0000000").asCString()));
+		f = false;
+		for(unsigned int j=0; j<m_Issues.size();j++) {
+			if(m_Issues[j] == theRecords[i].get("actionNumber2", "0000000").asCString()) {
+				f = true;
+				break;
+			}
+		}
+		if (!f) m_Issues.push_back(CString(theRecords[i].get("actionNumber2", "0000000").asCString()));
 
 	}
 
 	// we have enough issues, let's display them
-	CComboBox box;
-	box.Attach(GetDlgItem(IDC_COMBOISSUE)->m_hWnd);
+	CListBox box;
+	box.Attach(GetDlgItem(IDC_LISTISSUE)->m_hWnd);
 	box.SetCurSel(0);
 	for (unsigned int i=0; i < m_Issues.size(); i++) {
 		box.InsertString(i, m_Issues[i]);
 	}
 	box.Detach();
 
-	box.Attach(GetDlgItem(IDC_COMBOPEOPLE)->m_hWnd);
+	box.Attach(GetDlgItem(IDC_LISTPEOPLE)->m_hWnd);
 	box.SetCurSel(0);
 	for (unsigned int i=0; i < m_People.size(); i++) {
 		box.InsertString(i, m_People[i]);
@@ -126,49 +146,152 @@ void BirdView::OnCbnEditchangeComboissue()
 
 void BirdView::OnCbnSelchangeComboissue()
 {
+
+}
+
+void BirdView::OnCbnSelchangeCombopeople()
+{
+}
+
+
+void BirdView::OnLbnDblclkListsheet()
+{
+	// TODO: Add your control notification handler code here
+	CListBox bigbox;
+	bigbox.Attach(GetDlgItem(IDC_LISTSHEET)->m_hWnd);
+	int index = bigbox.GetCurSel();
+	int nMatch = 0;	
+	if(m_Method == BYPEOPLE) {
+		CListBox sb;
+		sb.Attach(GetDlgItem(IDC_LISTPEOPLE)->m_hWnd);
+		int sindex = sb.GetCurSel();
+		sb.Detach();
+		TCHAR theString[256]; // set window text can be happy
+		for (unsigned int i = 0; i < theRecords.size(); i++) {
+			MultiByteToWideChar(CP_UTF8, NULL, theRecords[i].get("userName", "NA").asCString(), -1, theString, 256);
+			if(m_People[sindex] == CString (theString)) {
+				if(nMatch == index) {
+					theTarget = theRecords[i];
+					break;
+				}	
+				nMatch++;
+				continue;
+			}
+		} 
+	} else if (m_Method == BYISSUE) {
+		TCHAR theString[256]; // set window text can be happy
+		for (unsigned int i = 0; i < theRecords.size(); i++) {
+			MultiByteToWideChar(CP_UTF8, NULL, theRecords[i].get("userName", "NA").asCString(), -1, theString, 256);
+			if(m_People[index] == theString) {
+				nMatch++;
+				if(nMatch == index) {
+					theTarget = theRecords[i];
+					break;
+				}
+				continue;
+			}
+		} 
+	} else {
+		assert(0);
+	}
+	bigbox.Detach();
+	EndDialog(IDOK); 
+}
+
+void BirdView::OnLbnSelchangeListissue()
+{
+	// TODO: Add your control notification handler code here
 	CListBox bigbox;
 	bigbox.Attach(GetDlgItem(IDC_LISTSHEET)->m_hWnd);
 	bigbox.ResetContent();
 	// get the selected index (n) for the combo box
 	int n = 0;	
 	TCHAR theString[256]; // set window text can be happy
-	CComboBox box;
-	box.Attach(GetDlgItem(IDC_COMBOISSUE)->m_hWnd);
+	CListBox box;
+	box.Attach(GetDlgItem(IDC_LISTISSUE)->m_hWnd);
 	n = box.GetCurSel();
 	box.Detach();
 	// update content of the sheet
-	for (int i = 0; i < theRecords.size(); i++) {
+	for (unsigned int i = 0; i < theRecords.size(); i++) {
 		CString s;
 		// because issues will not be the same,
 		// so we will NOT compare again if we found one match
 		if(m_Issues[n] == theRecords[i].get("actionNumber1", "0000000").asCString()) {
 			s += theRecords[i].get("actionNumber1", "0000000").asCString();
-			s += _T("期\t");
+			s += _T("期 ");
 			MultiByteToWideChar(CP_UTF8, NULL, theRecords[i].get("userName", "NA").asCString(), -1, theString, 256);
 			s += theString;
-			s += _T("预测\t奇偶\t");
+			_stprintf(theString, _T(" id号%d "), theRecords[i].get("ticketUseId", "0").asInt());
+			s += theString;	
+			s += _T(" ");
 			s += theRecords[i].get("dataOne1", "0000000").asCString();
-			s += _T("小大\t");
+			s += _T(" ");
 			s += theRecords[i].get("dataOne2", "0000000").asCString();
-			s += _T("结果\t");
+			s += _T(" 结果 ");
 			// TODO: 结果
 			bigbox.AddString(s);
 			continue;
 		}
 		if(m_Issues[n] == theRecords[i].get("actionNumber2", "0000000").asCString()) {
 			s += theRecords[i].get("actionNumber2", "0000000").asCString();
-			s += _T("期\t");
+			s += _T("期 ");
 			MultiByteToWideChar(CP_UTF8, NULL, theRecords[i].get("userName", "NA").asCString(), -1, theString, 256);
 			s += theString;
-			s += _T("预测\t奇偶\t");
+			_stprintf(theString, _T(" id号%d "), theRecords[i].get("ticketUseId", "0").asInt());
+			s += theString;	
+			s += _T(" ");
 			s += theRecords[i].get("dataTwo1", "0000000").asCString();
-			s += _T("小大\t");
+			s += _T(" ");
 			s += theRecords[i].get("dataTwo2", "0000000").asCString();
-			s += _T("结果\t");
+			s += _T(" 结果 ");
 			// TODO: 结果
 			bigbox.AddString(s);
 			continue;
 		}
 	}
 	bigbox.Detach();
+	m_Method =  BYISSUE;
+}
+
+void BirdView::OnLbnSelchangeListpeople()
+{
+	// TODO: Add your control notification handler code here
+	CListBox bigbox;
+	bigbox.Attach(GetDlgItem(IDC_LISTSHEET)->m_hWnd);
+	bigbox.ResetContent();
+	// get the selected index (n) for the combo box
+	int n = 0;	
+	TCHAR theString[256]; // set window text can be happy
+	CListBox box;
+	box.Attach(GetDlgItem(IDC_LISTPEOPLE)->m_hWnd);
+	n = box.GetCurSel();
+	box.Detach();
+	// update content of the sheet
+	for (unsigned int i = 0; i < theRecords.size(); i++) {
+		CString s;
+		MultiByteToWideChar(CP_UTF8, NULL, theRecords[i].get("userName", "NA").asCString(), -1, theString, 256);
+		if(m_People[n] == theString) {
+			s += theString;	
+			_stprintf(theString, _T(" id号%d "), theRecords[i].get("ticketUseId", "0").asInt());
+			s += theString;	
+			s += theRecords[i].get("actionNumber1", "0000000").asCString();
+			s += _T("期 ");
+			s += theRecords[i].get("dataOne1", "0000000").asCString();
+			s += _T(" ");
+			s += theRecords[i].get("dataOne2", "0000000").asCString();
+			s += _T(" ");
+			s += theRecords[i].get("actionNumber2", "0000000").asCString();
+			s += _T("期 ");
+			s += theRecords[i].get("dataTwo1", "0000000").asCString();
+			s += _T(" ");
+			s += theRecords[i].get("dataTwo2", "0000000").asCString();
+			s += _T(" 结果 ");
+			// TODO: 结果
+			bigbox.AddString(s);
+			continue;
+		}
+	}
+	bigbox.Detach();
+	m_Method =  BYPEOPLE;
+
 }

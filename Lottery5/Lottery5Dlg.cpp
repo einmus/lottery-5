@@ -20,6 +20,7 @@ unsigned int nLoopCount; // current serial id
 Json::Value theRecords; // all records of current session
 char * m_pDownloadedBuffer; // the downloaded buffer
 SOURCEMODE g_SourceMode;
+extern const TCHAR gcURL[] = _T("http://115.28.141.187/TicketManager/recordAction!searchTicket.action?pageSize=10000");
 
 const TCHAR SIXTYFOURGUA[] = _T("地天泰 山天大畜水天需 风天小畜雷天大壮火天大有泽天夬 乾为天 地泽临 山泽损 水泽节 风泽中孚雷泽归妹火泽睽 兑为泽 天泽履 地火明夷山火贲 水火既济风火家人雷火豊 离为火 泽火革 天火同人地雷复 山雷颐 水雷屯 风雷益 震为雷 火雷噬嗑泽雷随 天雷无妄地风升 山风蛊 水风井 巽为风 雷风恒 火风鼎 泽风大过天风姤 地水师 山水蒙 坎为水 风水涣 雷水解 火水未济泽水困 天水讼 地山谦 艮为山 水山蹇 风山渐 雷山小过火山旅 泽山咸 天山遁 坤为地 山地剥 水地比 风地观 雷地豫 火地晋 泽地萃 天地否 ");
 const TCHAR EIGHTGUA[] = _T("☰☱☲☳☴☵☶☷");
@@ -1580,7 +1581,7 @@ void CLottery5Dlg::OnBnClickedButtongetonline()
 	if(g_SourceMode != ONLINE_DOWNLOAD) {// fetch online data only once
 		CInternetSession theSession;
 		// use pageSize parameter to grab whole database
-		CHttpFile* theContent = (CHttpFile*)theSession.OpenURL(_T("http://115.28.141.187/TicketManager/recordAction!searchTicket.action?pageSize=10000"));
+		CHttpFile* theContent = (CHttpFile*)theSession.OpenURL(gcURL);
 		CString str;
 		theContent->QueryInfo(HTTP_QUERY_CONTENT_LENGTH, str);
 		size_t theContentLength = _ttoi(LPCTSTR(str));
@@ -1724,6 +1725,68 @@ void CLottery5Dlg::OnBnClickedButtonbirdview()
 {
 	// TODO: Add your control notification handler code here
 	BirdView theBirdView;
-	theBirdView.DoModal();
+	if(IDOK == theBirdView.DoModal()) {
+		// the target is found, continue to process it;
+		TCHAR theString[256]; // set window text can be happy
+		CComboBox edits;
 
+		// update the input content
+		MultiByteToWideChar(CP_ACP, NULL, theTarget.get("dataOne1", "000000").asCString(), -1, theString, 256);
+		edits.Attach(GetDlgItem(IDC_YAO11+0)->m_hWnd);
+		edits.SetWindowText(theString);
+		edits.Detach();
+
+		MultiByteToWideChar(CP_ACP, NULL, theTarget.get("dataOne2", "000000").asCString(), -1, theString, 256);
+		edits.Attach(GetDlgItem(IDC_YAO11+1)->m_hWnd);
+		edits.SetWindowText(theString);
+		edits.Detach();
+
+		MultiByteToWideChar(CP_ACP, NULL, theTarget.get("dataTwo1", "000000").asCString(), -1, theString, 256);
+		edits.Attach(GetDlgItem(IDC_YAO11+2)->m_hWnd);
+		edits.SetWindowText(theString);
+		edits.Detach();	
+
+		MultiByteToWideChar(CP_ACP, NULL, theTarget.get("dataTwo2", "000000").asCString(), -1, theString, 256);
+		edits.Attach(GetDlgItem(IDC_YAO11+3)->m_hWnd);
+		edits.SetWindowText(theString);
+		edits.Detach();
+
+		MultiByteToWideChar(CP_ACP, NULL, theTarget.get("actionNumber1", "0000000").asCString(), -1, theString, 256);
+		edits.Attach(GetDlgItem(IDC_EDITISSUE1)->m_hWnd);
+		edits.SetWindowText(theString);
+		edits.Detach();
+
+		MultiByteToWideChar(CP_ACP, NULL, theTarget.get("actionNumber2", "0000000").asCString(), -1, theString, 256);
+		edits.Attach(GetDlgItem(IDC_EDITISSUE2)->m_hWnd);
+		edits.SetWindowText(theString);
+		edits.Detach();
+
+		// fill last group with 000000
+		for(int i=4;i<6;i++){
+			edits.Attach(GetDlgItem(IDC_YAO11+i)->m_hWnd);
+			edits.SetWindowText(_T("000000"));
+			edits.Detach();
+		}
+
+		// info
+		MultiByteToWideChar(CP_UTF8, NULL, theTarget.get("userName", "NA").asCString(), -1, theString, 256);
+		CString text2show;
+		text2show += theString;
+		_stprintf(theString, _T(" id号%d"), theTarget.get("ticketUseId", "0").asInt());
+		text2show += theString;
+		edits.Attach(GetDlgItem(IDC_EDITINFO)->m_hWnd);
+		edits.SetWindowText(text2show);
+		edits.Detach();
+
+		// time 
+		CTime theTime(theTarget.get("addTime", "0").asUInt64() / 1000);
+		CDateTimeCtrl cdtc;
+		cdtc.Attach(GetDlgItem(IDC_DATETIMEPICKER4)->m_hWnd);
+		cdtc.SetTime(&theTime);	
+		cdtc.Detach();
+		cdtc.Attach(GetDlgItem(IDC_DATETIMEPICKER1)->m_hWnd);
+		cdtc.SetTime(&theTime);	
+		cdtc.Detach();
+		//grey out the third record
+	}
 }

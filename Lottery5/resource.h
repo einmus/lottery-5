@@ -118,10 +118,10 @@
 #define IDC_BUTTONGETONLINE             1084
 #define IDC_BUTTONMARK                  1085
 #define IDC_BUTTONBIRDVIEW              1086
-#define IDC_LIST1                       1089
 #define IDC_LISTSHEET                   1089
+#define IDC_LISTISSUE                   1090
+#define IDC_LISTPEOPLE                  1091
 #define IDC_COMBOISSUE                  1094
-#define IDC_COMBOPEOPLE                 1095
 #define IDC_YAO11                       1101
 #define IDC_YAO12                       1102
 #define IDC_YAO13                       1103

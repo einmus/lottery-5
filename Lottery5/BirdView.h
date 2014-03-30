@@ -23,7 +23,16 @@ public:
 private:
 	vector<CString> m_People;
 	vector<CString> m_Issues;
+	CFont m_UNIfont;
+	enum SORT_METHOD {
+		BYISSUE = 0,
+		BYPEOPLE = 1,
+	} m_Method;
 public:
 	afx_msg void OnCbnEditchangeComboissue();
 	afx_msg void OnCbnSelchangeComboissue();
+	afx_msg void OnCbnSelchangeCombopeople();
+	afx_msg void OnLbnDblclkListsheet();
+	afx_msg void OnLbnSelchangeListissue();
+	afx_msg void OnLbnSelchangeListpeople();
 };

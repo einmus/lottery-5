@@ -192,7 +192,7 @@ void BirdView::OnLbnDblclkListsheet()
 			}
 		} 
 	} else {
-		assert(0);
+		//assert(0);
 	}
 	bigbox.Detach();
 	EndDialog(IDOK); 

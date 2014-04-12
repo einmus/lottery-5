@@ -9,6 +9,7 @@
 #include "GanZhi.h"
 #include <Richedit.h>
 #include "BirdView.h"
+#include "AutomateView.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -114,6 +115,7 @@ BEGIN_MESSAGE_MAP(CLottery5Dlg, CDialog)
 	ON_BN_CLICKED(IDC_BUTTONGETONLINE, &CLottery5Dlg::OnBnClickedButtongetonline)
 	ON_BN_CLICKED(IDC_BUTTONMARK, &CLottery5Dlg::OnBnClickedButtonmark)
 	ON_BN_CLICKED(IDC_BUTTONBIRDVIEW, &CLottery5Dlg::OnBnClickedButtonbirdview)
+	ON_BN_CLICKED(IDC_BUTTONAUTOMATE, &CLottery5Dlg::OnBnClickedButtonautomate)
 END_MESSAGE_MAP()
 
 
@@ -1604,7 +1606,8 @@ void CLottery5Dlg::OnBnClickedButtongetonline()
 		g_SourceMode = ONLINE_DOWNLOAD;
 	}
 	for(;nLoopCount<theRecords.size();nLoopCount++) {
-		if(theRecords[nLoopCount].get("analyseState", 1).asInt() == 2) {
+		CString t("2");
+		if(theRecords[nLoopCount].get("analyseState", 1).asCString() == t) {
 			// found a match
 			theTarget = theRecords[nLoopCount];
 			break;
@@ -1789,4 +1792,11 @@ void CLottery5Dlg::OnBnClickedButtonbirdview()
 		cdtc.Detach();
 		//grey out the third record
 	}
+}
+
+void CLottery5Dlg::OnBnClickedButtonautomate()
+{
+	// TODO: Add your control notification handler code here
+	AutomateView V;
+	V.DoModal();
 }

@@ -68,4 +68,5 @@ public:
 	afx_msg void OnBnClickedButtongetonline();
 	afx_msg void OnBnClickedButtonmark();
 	afx_msg void OnBnClickedButtonbirdview();
+	afx_msg void OnBnClickedButtonautomate();
 };

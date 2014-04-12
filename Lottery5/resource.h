@@ -20,10 +20,12 @@
 #define IDB_BITMAP7                     135
 #define IDB_BITMAP8                     136
 #define IDD_BIRDVIEW                    137
+#define IDD_DIALOGAUTOMATE              138
 #define IDC_DATETIMEPICKER1             1000
 #define IDC_MONTHCALENDAR4              1006
 #define IDC_DATETIMEPICKER4             1007
 #define IDC_EDIT1                       1008
+#define IDC_EDITAUTOMATEINFO            1008
 #define IDC_EDIT2                       1009
 #define IDC_BUTTON1                     1010
 #define IDC_EDIT3                       1011
@@ -118,10 +120,12 @@
 #define IDC_BUTTONGETONLINE             1084
 #define IDC_BUTTONMARK                  1085
 #define IDC_BUTTONBIRDVIEW              1086
+#define IDC_BUTTONAUTOMATE              1087
 #define IDC_LISTSHEET                   1089
 #define IDC_LISTISSUE                   1090
 #define IDC_LISTPEOPLE                  1091
-#define IDC_COMBOISSUE                  1094
+#define IDC_PROGRESS1                   1095
+#define IDC_PROGRESSAUTOMATE            1095
 #define IDC_YAO11                       1101
 #define IDC_YAO12                       1102
 #define IDC_YAO13                       1103
@@ -133,9 +137,9 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        138
+#define _APS_NEXT_RESOURCE_VALUE        139
 #define _APS_NEXT_COMMAND_VALUE         32771
-#define _APS_NEXT_CONTROL_VALUE         1095
+#define _APS_NEXT_CONTROL_VALUE         1096
 #define _APS_NEXT_SYMED_VALUE           104
 #endif
 #endif

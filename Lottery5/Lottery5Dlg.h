@@ -30,7 +30,7 @@ protected:
 	afx_msg HCURSOR OnQueryDragIcon();
 	DECLARE_MESSAGE_MAP()
 public:
-	afx_msg void OnBnClickedButton1();  
+	afx_msg void OnBnClickedButtonAction();  
     void Parse8Gua(CString& csGua, int & nIndex0, int & nIndex1);
     void Parse64Gua(CString& csGua, int & iIndex4);
     void Parse64Gua2( CString& csGua, int & iIndex4 );
@@ -44,29 +44,30 @@ public:
 private:
     //headline, usual, smaller
     CFont m_UNIfont[4];
-    UINT nCurrDisplayGroup;
     CBitmap m_Gua[8];
     int bInitialResult;
-
+    UINT nCurrDisplayGroup;
 
 public:
     afx_msg void OnDestroy();
     afx_msg void OnBnClickedGroupadd();
     afx_msg void OnBnClickedGroupsubstract();
     void DisplayBallonTip(int nID);
-    afx_msg void OnCbnSelchangeWei1(){if(bInitialResult)OnBnClickedButton1();}
-    afx_msg void OnCbnSelchangeWei2(){if(bInitialResult)OnBnClickedButton1();}
-    afx_msg void OnCbnSelchangeWei3(){if(bInitialResult)OnBnClickedButton1();}
-    afx_msg void OnCbnSelchangeAdject1(){if(bInitialResult)OnBnClickedButton1();}
-    afx_msg void OnCbnSelchangeAdject2(){if(bInitialResult)OnBnClickedButton1();}
-    afx_msg void OnCbnSelchangeAdject3(){if(bInitialResult)OnBnClickedButton1();}
-    afx_msg void OnCbnSelchangeCase1(){if(bInitialResult)OnBnClickedButton1();}
-    afx_msg void OnCbnSelchangeCase2(){if(bInitialResult)OnBnClickedButton1();}
-    afx_msg void OnCbnSelchangeCase3(){if(bInitialResult)OnBnClickedButton1();}
+    afx_msg void OnCbnSelchangeWei1(){if(bInitialResult)OnBnClickedButtonAction();}
+    afx_msg void OnCbnSelchangeWei2(){if(bInitialResult)OnBnClickedButtonAction();}
+    afx_msg void OnCbnSelchangeWei3(){if(bInitialResult)OnBnClickedButtonAction();}
+    afx_msg void OnCbnSelchangeAdject1(){if(bInitialResult)OnBnClickedButtonAction();}
+    afx_msg void OnCbnSelchangeAdject2(){if(bInitialResult)OnBnClickedButtonAction();}
+    afx_msg void OnCbnSelchangeAdject3(){if(bInitialResult)OnBnClickedButtonAction();}
+    afx_msg void OnCbnSelchangeCase1(){if(bInitialResult)OnBnClickedButtonAction();}
+    afx_msg void OnCbnSelchangeCase2(){if(bInitialResult)OnBnClickedButtonAction();}
+    afx_msg void OnCbnSelchangeCase3(){if(bInitialResult)OnBnClickedButtonAction();}
     afx_msg void OnBnClickedButtonclear();
 	afx_msg void OnBnClickedButtonrandom();
 	afx_msg void OnBnClickedButtongetonline();
 	afx_msg void OnBnClickedButtonmark();
 	afx_msg void OnBnClickedButtonbirdview();
 	afx_msg void OnBnClickedButtonautomate();
+	// Analyze current chosen target
+	void AnalyzeCurrentChosenTarget(double * score);
 };

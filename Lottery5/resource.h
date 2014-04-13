@@ -27,7 +27,7 @@
 #define IDC_EDIT1                       1008
 #define IDC_EDITAUTOMATEINFO            1008
 #define IDC_EDIT2                       1009
-#define IDC_BUTTON1                     1010
+#define IDC_BUTTONACTION                     1010
 #define IDC_EDIT3                       1011
 #define IDC_EDITISSUE1                  1011
 #define IDC_EDIT5                       1012

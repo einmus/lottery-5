@@ -54,8 +54,8 @@ BEGIN
     "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_CHS)\r\n"
     "LANGUAGE 4, 2\r\n"
     "#pragma code_page(936)\r\n"
-    "#include ""res\\Lottery5.rc2""  // ·? Microsoft Visual C++ ±à?-μ?×ê?′\r\n"
-    "#include ""l.CHS\\afxres.rc""      // ±ê×?×é?t\r\n"
+    "#include ""res\\Lottery5.rc2""  // ?¤? Microsoft Visual C++ ?à¨¤?-|ì??á¨o???\r\n"
+    "#include ""l.CHS\\afxres.rc""      // ?à¨o?á??á¨|?t\r\n"
     "#endif\r\n"
     "\0"
 END
@@ -99,7 +99,7 @@ BEGIN
     EDITTEXT        IDC_YAO14,77,242,84,12,ES_AUTOHSCROLL | ES_NUMBER
     EDITTEXT        IDC_YAO15,77,297,84,12,ES_AUTOHSCROLL | ES_NUMBER
     EDITTEXT        IDC_YAO16,77,314,84,12,ES_AUTOHSCROLL | ES_NUMBER
-    PUSHBUTTON      "->",IDC_BUTTON1,201,197,27,23
+    PUSHBUTTON      "->",IDC_BUTTONACTION,201,197,27,23
     CONTROL         "",IDC_DATETIMEPICKER1,"SysDateTimePick32",DTS_RIGHTALIGN | DTS_UPDOWN | 0x8,172,19,62,14
     CONTROL         "",IDC_DATETIMEPICKER4,"SysDateTimePick32",DTS_RIGHTALIGN,68,19,62,14
     LTEXT           "公历日期：",IDC_STATIC,19,19,39,14,SS_CENTERIMAGE
@@ -206,10 +206,10 @@ STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSM
 CAPTION "Dialog"
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
-    DEFPUSHBUTTON   "OK",IDOK,106,161,50,14
-    PUSHBUTTON      "Cancel",IDCANCEL,160,161,50,14
+    DEFPUSHBUTTON   "OK",IDOK,106,161,50,14,NOT WS_VISIBLE
+    PUSHBUTTON      "Cancel",IDCANCEL,160,161,50,14,NOT WS_VISIBLE
     CONTROL         "",IDC_PROGRESSAUTOMATE,"msctls_progress32",WS_BORDER,7,41,302,32
-    EDITTEXT        IDC_EDITAUTOMATEINFO,23,93,268,48,ES_AUTOHSCROLL | ES_READONLY
+    EDITTEXT        IDC_EDITAUTOMATEINFO,23,93,268,48,ES_MULTILINE | ES_AUTOHSCROLL | ES_READONLY
 END
 
 
@@ -462,8 +462,8 @@ END
 #if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_CHS)
 LANGUAGE 4, 2
 #pragma code_page(936)
-#include "res\Lottery5.rc2"  // 非 Microsoft Visual C++ 编辑的资源
-#include "l.CHS\afxres.rc"      // 标准组件
+#include "res\Lottery5.rc2"  // ·? Microsoft Visual C++ ±à?-μ?×ê?′
+#include "l.CHS\afxres.rc"      // ±ê×?×é?t
 #endif
 
 /////////////////////////////////////////////////////////////////////////////

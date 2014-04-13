@@ -82,21 +82,21 @@ BOOL BirdView::OnInitDialog()
 
 
 	// step 2: analyze it
-	TCHAR theString[256]; // set window text can be happy
-	memset(theString, 0, sizeof(theString));
+	TCHAR zs[256]; // set window text can be happy
+	memset(zs, 0, sizeof(zs));
 	for(unsigned int i=0; i<theRecords.size();i++) {
 		bool f = false;
 		// a. people
 		for(unsigned int j = 0; j < m_People.size();j++) {
-			MultiByteToWideChar(CP_UTF8, NULL, theRecords[i].get("userName", "NA").asCString(), -1, theString, 256);
-			if(m_People[j] == theString) {
+			MultiByteToWideChar(CP_UTF8, NULL, theRecords[i].get("userName", "NA").asCString(), -1, zs, 256);
+			if(m_People[j] == zs) {
 				f = true;
 				break;
 			}
 		}
 		// for i = 0 case
-		if(i == 0) MultiByteToWideChar(CP_UTF8, NULL, theRecords[0].get("userName", "NA").asCString(), -1, theString, 256);
-		if (!f) m_People.push_back(CString(theString));
+		if(i == 0) MultiByteToWideChar(CP_UTF8, NULL, theRecords[0].get("userName", "NA").asCString(), -1, zs, 256);
+		if (!f) m_People.push_back(CString(zs));
 		// b. issue
 		f = false;
 		for(unsigned int j=0; j<m_Issues.size();j++) {
@@ -166,10 +166,10 @@ void BirdView::OnLbnDblclkListsheet()
 		sb.Attach(GetDlgItem(IDC_LISTPEOPLE)->m_hWnd);
 		int sindex = sb.GetCurSel();
 		sb.Detach();
-		TCHAR theString[256]; // set window text can be happy
+		TCHAR zs[256]; // set window text can be happy
 		for (unsigned int i = 0; i < theRecords.size(); i++) {
-			MultiByteToWideChar(CP_UTF8, NULL, theRecords[i].get("userName", "NA").asCString(), -1, theString, 256);
-			if(m_People[sindex] == CString (theString)) {
+			MultiByteToWideChar(CP_UTF8, NULL, theRecords[i].get("userName", "NA").asCString(), -1, zs, 256);
+			if(m_People[sindex] == CString (zs)) {
 				if(nMatch == index) {
 					theTarget = theRecords[i];
 					break;
@@ -179,10 +179,10 @@ void BirdView::OnLbnDblclkListsheet()
 			}
 		} 
 	} else if (m_Method == BYISSUE) {
-		TCHAR theString[256]; // set window text can be happy
+		TCHAR zs[256]; // set window text can be happy
 		for (unsigned int i = 0; i < theRecords.size(); i++) {
-			MultiByteToWideChar(CP_UTF8, NULL, theRecords[i].get("userName", "NA").asCString(), -1, theString, 256);
-			if(m_People[index] == theString) {
+			MultiByteToWideChar(CP_UTF8, NULL, theRecords[i].get("userName", "NA").asCString(), -1, zs, 256);
+			if(m_People[index] == zs) {
 				nMatch++;
 				if(nMatch == index) {
 					theTarget = theRecords[i];
@@ -206,7 +206,7 @@ void BirdView::OnLbnSelchangeListissue()
 	bigbox.ResetContent();
 	// get the selected index (n) for the combo box
 	int n = 0;	
-	TCHAR theString[256]; // set window text can be happy
+	TCHAR zs[256]; // set window text can be happy
 	CListBox box;
 	box.Attach(GetDlgItem(IDC_LISTISSUE)->m_hWnd);
 	n = box.GetCurSel();
@@ -219,10 +219,10 @@ void BirdView::OnLbnSelchangeListissue()
 		if(m_Issues[n] == theRecords[i].get("actionNumber1", "0000000").asCString()) {
 			s += theRecords[i].get("actionNumber1", "0000000").asCString();
 			s += _T("ÆÚ ");
-			MultiByteToWideChar(CP_UTF8, NULL, theRecords[i].get("userName", "NA").asCString(), -1, theString, 256);
-			s += theString;
-			_stprintf(theString, _T(" idºÅ%d "), theRecords[i].get("ticketUseId", "0").asInt());
-			s += theString;	
+			MultiByteToWideChar(CP_UTF8, NULL, theRecords[i].get("userName", "NA").asCString(), -1, zs, 256);
+			s += zs;
+			_stprintf(zs, _T(" idºÅ%d "), theRecords[i].get("ticketUseId", "0").asInt());
+			s += zs;	
 			s += _T(" ");
 			s += theRecords[i].get("dataOne1", "0000000").asCString();
 			s += _T(" ");
@@ -235,10 +235,10 @@ void BirdView::OnLbnSelchangeListissue()
 		if(m_Issues[n] == theRecords[i].get("actionNumber2", "0000000").asCString()) {
 			s += theRecords[i].get("actionNumber2", "0000000").asCString();
 			s += _T("ÆÚ ");
-			MultiByteToWideChar(CP_UTF8, NULL, theRecords[i].get("userName", "NA").asCString(), -1, theString, 256);
-			s += theString;
-			_stprintf(theString, _T(" idºÅ%d "), theRecords[i].get("ticketUseId", "0").asInt());
-			s += theString;	
+			MultiByteToWideChar(CP_UTF8, NULL, theRecords[i].get("userName", "NA").asCString(), -1, zs, 256);
+			s += zs;
+			_stprintf(zs, _T(" idºÅ%d "), theRecords[i].get("ticketUseId", "0").asInt());
+			s += zs;	
 			s += _T(" ");
 			s += theRecords[i].get("dataTwo1", "0000000").asCString();
 			s += _T(" ");
@@ -261,7 +261,7 @@ void BirdView::OnLbnSelchangeListpeople()
 	bigbox.ResetContent();
 	// get the selected index (n) for the combo box
 	int n = 0;	
-	TCHAR theString[256]; // set window text can be happy
+	TCHAR zs[256]; // set window text can be happy
 	CListBox box;
 	box.Attach(GetDlgItem(IDC_LISTPEOPLE)->m_hWnd);
 	n = box.GetCurSel();
@@ -269,11 +269,11 @@ void BirdView::OnLbnSelchangeListpeople()
 	// update content of the sheet
 	for (unsigned int i = 0; i < theRecords.size(); i++) {
 		CString s;
-		MultiByteToWideChar(CP_UTF8, NULL, theRecords[i].get("userName", "NA").asCString(), -1, theString, 256);
-		if(m_People[n] == theString) {
-			s += theString;	
-			_stprintf(theString, _T(" idºÅ%d "), theRecords[i].get("ticketUseId", "0").asInt());
-			s += theString;	
+		MultiByteToWideChar(CP_UTF8, NULL, theRecords[i].get("userName", "NA").asCString(), -1, zs, 256);
+		if(m_People[n] == zs) {
+			s += zs;	
+			_stprintf(zs, _T(" idºÅ%d "), theRecords[i].get("ticketUseId", "0").asInt());
+			s += zs;	
 			s += theRecords[i].get("actionNumber1", "0000000").asCString();
 			s += _T("ÆÚ ");
 			s += theRecords[i].get("dataOne1", "0000000").asCString();

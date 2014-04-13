@@ -96,7 +96,7 @@ BEGIN_MESSAGE_MAP(CLottery5Dlg, CDialog)
     ON_WM_PAINT()
     ON_WM_QUERYDRAGICON()
     //}}AFX_MSG_MAP
-    ON_BN_CLICKED(IDC_BUTTON1, &CLottery5Dlg::OnBnClickedButton1)
+    ON_BN_CLICKED(IDC_BUTTONACTION, &CLottery5Dlg::OnBnClickedButtonAction)
     ON_BN_CLICKED(IDC_BUTTON2, &CLottery5Dlg::OnBnClickedButton2)
     ON_WM_DESTROY()
     ON_BN_CLICKED(IDC_GROUPADD, &CLottery5Dlg::OnBnClickedGroupadd)
@@ -248,262 +248,6 @@ HCURSOR CLottery5Dlg::OnQueryDragIcon()
     return static_cast<HCURSOR>(m_hIcon);
 }
 
-
-
-//old logic
-//John Gu, 2012-03-01 22:18:40
-#if 0
-void CLottery5Dlg::OnBnClickedButton1()
-{
-    //clear upper and downer info
-    vCRDowner.SetSize(0);
-    vCRUpper.SetSize(0);
-    // TODO: Add your control notification handler code here
-    CString csDisplay;
-    //日期
-    SYSTEMTIME stYMD, stHM;
-    CDateTimeCtrl cdtc;
-    cdtc.Attach(GetDlgItem(IDC_DATETIMEPICKER4)->m_hWnd);
-    cdtc.GetTime(&stYMD);	
-    cdtc.Detach();
-    cdtc.Attach(GetDlgItem(IDC_DATETIMEPICKER1)->m_hWnd);
-    cdtc.GetTime(&stHM);	
-    cdtc.Detach();
-    TCHAR tcTemp[256];    
-    _stprintf(tcTemp, _T("%.4d年%02d月%02d日 %.2d时%02d分 "), stYMD.wYear, stYMD.wMonth, stYMD.wDay, stHM.wHour, stHM.wMinute); //公历
-    GetDayOf(&stYMD, tcTemp);  //农历
-    YMD2TD(tcTemp, stYMD.wYear, stYMD.wMonth, stYMD.wDay);//干支
-    csDisplay += tcTemp;
-    //时间
-    int nIndexSHICHEN = (stHM.wHour + 1)/ 2;
-    nIndexSHICHEN = nIndexSHICHEN==12?0:nIndexSHICHEN;
-    csDisplay += SHICHEN[nIndexSHICHEN];
-    csDisplay += _T("时");
-    csDisplay += _T("\n\n");
-    //得到预测输入
-    CEdit ceForecast;
-    ceForecast.Attach(GetDlgItem(IDC_EDIT1)->m_hWnd);
-    CString csForcast;
-    ceForecast.GetWindowText(csForcast);
-    ceForecast.Detach();
-    //1
-    csDisplay += ((((CButton*)(GetDlgItem(IDC_CHECK1)))->GetCheck())==BST_CHECKED)?L'√':L'□';csDisplay += _T("3D ");
-    GetDlgItem(IDC_EDIT3)->GetWindowText(tcTemp, 256);
-    csDisplay += tcTemp;
-    csDisplay += _T(" 期：");
-    GetDlgItem(IDC_COMBO2)->GetWindowText(tcTemp, 256);
-    csDisplay += tcTemp;
-    csDisplay += _T("位是");
-    GetDlgItem(IDC_COMBO3)->GetWindowText(tcTemp, 256);
-    csDisplay += tcTemp;
-    csDisplay += _T("的可能性：\n");
-
-    if (!IsInputLegit(csForcast))
-    {
-        //预测输入错误
-        CEdit ceForecast;
-        ceForecast.Attach(GetDlgItem(IDC_EDIT1)->m_hWnd);
-        CString csForcast;
-        ceForecast.ShowBalloonTip(_T("数据有误！"),_T("在这里输入完整的上下卦信息。用1代表一，2代表--，0代表x变卦，3代表o变卦。从下往上输入！"),TTI_ERROR);
-        ceForecast.Detach();
-        //清空结果
-        CEdit ceT;
-        ceT.Attach(GetDlgItem(IDC_RICHEDIT21)->m_hWnd);
-        ceT.SetWindowText(NULL);
-        ceT.Detach();
-        return;
-    }
-    AppendGuaContent(csDisplay, csForcast);
-    //2
-    csDisplay += ((((CButton*)(GetDlgItem(IDC_CHECK2)))->GetCheck())==BST_CHECKED)?L'√':L'□';csDisplay += _T("3D ");
-    GetDlgItem(IDC_EDIT3)->GetWindowText(tcTemp, 256);
-    csDisplay += tcTemp;
-    csDisplay += _T(" 期：");
-    GetDlgItem(IDC_COMBO4)->GetWindowText(tcTemp, 256);
-    csDisplay += tcTemp;
-    csDisplay += _T("位是");
-    GetDlgItem(IDC_COMBO5)->GetWindowText(tcTemp, 256);
-    csDisplay += tcTemp;
-    csDisplay += _T("的可能性：\n");
-    ceForecast.Attach(GetDlgItem(IDC_EDIT4)->m_hWnd);
-    ceForecast.GetWindowText(csForcast);
-    ceForecast.Detach();
-    //验证预测输入的合法性
-    if (!IsInputLegit(csForcast))
-    {
-        //预测输入错误
-        CEdit ceForecast;
-        ceForecast.Attach(GetDlgItem(IDC_EDIT4)->m_hWnd);
-        CString csForcast;
-        ceForecast.ShowBalloonTip(_T("数据有误！"),_T("在这里输入完整的上下卦信息。用1代表一，2代表--，0代表x变卦，3代表o变卦。从下往上输入！"),TTI_ERROR);
-        ceForecast.Detach();
-        //清空结果
-        CEdit ceT;
-        ceT.Attach(GetDlgItem(IDC_RICHEDIT21)->m_hWnd);
-        ceT.SetWindowText(NULL);
-        ceT.Detach();
-        return;
-    }
-    AppendGuaContent(csDisplay, csForcast);
-    //3
-    csDisplay += ((((CButton*)(GetDlgItem(IDC_CHECK3)))->GetCheck())==BST_CHECKED)?L'√':L'□';csDisplay += _T("3D ");
-    GetDlgItem(IDC_EDIT3)->GetWindowText(tcTemp, 256);
-    csDisplay += tcTemp;
-    csDisplay += _T(" 期：");
-    GetDlgItem(IDC_COMBO6)->GetWindowText(tcTemp, 256);
-    csDisplay += tcTemp;
-    csDisplay += _T("位是");
-    GetDlgItem(IDC_COMBO7)->GetWindowText(tcTemp, 256);
-    csDisplay += tcTemp;
-    csDisplay += _T("的可能性：\n");
-    ceForecast.Attach(GetDlgItem(IDC_EDIT6)->m_hWnd);
-    ceForecast.GetWindowText(csForcast);
-    ceForecast.Detach();
-    //验证预测输入的合法性
-    if (!IsInputLegit(csForcast))
-    {
-        //预测输入错误
-        CEdit ceForecast;
-        ceForecast.Attach(GetDlgItem(IDC_EDIT6)->m_hWnd);
-        CString csForcast;
-        ceForecast.ShowBalloonTip(_T("数据有误！"),_T("在这里输入完整的上下卦信息。用1代表一，2代表--，0代表x变卦，3代表o变卦。从下往上输入！"),TTI_ERROR);
-        ceForecast.Detach();
-        //清空结果
-        CEdit ceT;
-        ceT.Attach(GetDlgItem(IDC_RICHEDIT21)->m_hWnd);
-        ceT.SetWindowText(NULL);
-        ceT.Detach();
-        return;
-    }
-    AppendGuaContent(csDisplay, csForcast);
-    //4
-    csDisplay += ((((CButton*)(GetDlgItem(IDC_CHECK4)))->GetCheck())==BST_CHECKED)?L'√':L'□';csDisplay += _T("3D ");
-    GetDlgItem(IDC_EDIT3)->GetWindowText(tcTemp, 256);
-    csDisplay += tcTemp;
-    csDisplay += _T(" 期：");
-    GetDlgItem(IDC_COMBO8)->GetWindowText(tcTemp, 256);
-    csDisplay += tcTemp;
-    csDisplay += _T("位是");
-    GetDlgItem(IDC_COMBO9)->GetWindowText(tcTemp, 256);
-    csDisplay += tcTemp;
-    csDisplay += _T("的可能性：\n");
-    ceForecast.Attach(GetDlgItem(IDC_EDIT8)->m_hWnd);
-    ceForecast.GetWindowText(csForcast);
-    ceForecast.Detach();
-    //验证预测输入的合法性
-    if (!IsInputLegit(csForcast))
-    {
-        //预测输入错误
-        CEdit ceForecast;
-        ceForecast.Attach(GetDlgItem(IDC_EDIT8)->m_hWnd);
-        CString csForcast;
-        ceForecast.ShowBalloonTip(_T("数据有误！"),_T("在这里输入完整的上下卦信息。用1代表一，2代表--，0代表x变卦，3代表o变卦。从下往上输入！"),TTI_ERROR);
-        ceForecast.Detach();
-        //清空结果
-        CEdit ceT;
-        ceT.Attach(GetDlgItem(IDC_RICHEDIT21)->m_hWnd);
-        ceT.SetWindowText(NULL);
-        ceT.Detach();
-        return;
-    }
-    AppendGuaContent(csDisplay, csForcast);
-    //5
-
-
-    csDisplay += ((((CButton*)(GetDlgItem(IDC_CHECK5)))->GetCheck())==BST_CHECKED)?L'√':L'□';csDisplay += _T("3D ");
-    GetDlgItem(IDC_EDIT3)->GetWindowText(tcTemp, 256);
-    csDisplay += tcTemp;
-    csDisplay += _T(" 期：");
-    GetDlgItem(IDC_COMBO10)->GetWindowText(tcTemp, 256);
-    csDisplay += tcTemp;
-    csDisplay += _T("位是");
-    GetDlgItem(IDC_COMBO11)->GetWindowText(tcTemp, 256);
-    csDisplay += tcTemp;
-    csDisplay += _T("的可能性：\n");
-    ceForecast.Attach(GetDlgItem(IDC_EDIT10)->m_hWnd);
-    ceForecast.GetWindowText(csForcast);
-    ceForecast.Detach();
-    //验证预测输入的合法性
-    if (!IsInputLegit(csForcast))
-    {
-        //预测输入错误
-        CEdit ceForecast;
-        ceForecast.Attach(GetDlgItem(IDC_EDIT10)->m_hWnd);
-        CString csForcast;
-        ceForecast.ShowBalloonTip(_T("数据有误！"),_T("在这里输入完整的上下卦信息。用1代表一，2代表--，0代表x变卦，3代表o变卦。从下往上输入！"),TTI_ERROR);
-        ceForecast.Detach();
-        //清空结果
-        CEdit ceT;
-        ceT.Attach(GetDlgItem(IDC_RICHEDIT21)->m_hWnd);
-        ceT.SetWindowText(NULL);
-        ceT.Detach();
-        return;
-    }
-    AppendGuaContent(csDisplay, csForcast);
-    //6
-    csDisplay += ((((CButton*)(GetDlgItem(IDC_CHECK6)))->GetCheck())==BST_CHECKED)?L'√':L'□';csDisplay += _T("3D ");
-    GetDlgItem(IDC_EDIT3)->GetWindowText(tcTemp, 256);
-    csDisplay += tcTemp;
-    csDisplay += _T(" 期：");
-    GetDlgItem(IDC_COMBO12)->GetWindowText(tcTemp, 256);
-    csDisplay += tcTemp;
-    csDisplay += _T("位是");
-    GetDlgItem(IDC_COMBO13)->GetWindowText(tcTemp, 256);
-    csDisplay += tcTemp;
-    csDisplay += _T("的可能性：\n");
-    ceForecast.Attach(GetDlgItem(IDC_EDIT12)->m_hWnd);
-    ceForecast.GetWindowText(csForcast);
-    ceForecast.Detach();
-    //验证预测输入的合法性
-    if (!IsInputLegit(csForcast))
-    {
-        //预测输入错误
-        CEdit ceForecast;
-        ceForecast.Attach(GetDlgItem(IDC_EDIT12)->m_hWnd);
-        CString csForcast;
-        ceForecast.ShowBalloonTip(_T("数据有误！"),_T("在这里输入完整的上下卦信息。用1代表一，2代表--，0代表x变卦，3代表o变卦。从下往上输入！"),TTI_ERROR);
-        ceForecast.Detach();
-        //清空结果
-        CEdit ceT;
-        ceT.Attach(GetDlgItem(IDC_RICHEDIT21)->m_hWnd);
-        ceT.SetWindowText(NULL);
-        ceT.Detach();
-        return;
-    }
-    AppendGuaContent(csDisplay, csForcast);
-    //显示
-    CRichEditCtrl EditRes;
-    EditRes.Attach(GetDlgItem(IDC_RICHEDIT21)->m_hWnd);
-    CHARFORMAT cft;
-    memset(&cft, 0, sizeof(cft));
-    cft.cbSize = sizeof(cft);
-    cft.dwMask = CFM_SIZE|CFM_FACE;
-    cft.yHeight = 300;//170 original
-    wchar_t wszSong[] = L"宋体";
-    memcpy(&cft.szFaceName, wszSong, sizeof(wszSong));
-    EditRes.SetDefaultCharFormat(cft);
-
-    EditRes.SetWindowText(csDisplay);
-    //upper
-    memset(&cft, 0, sizeof(cft));
-    cft.cbSize = sizeof(cft);
-    cft.dwMask = CFM_OFFSET;
-    cft.yOffset = -60;
-
-    for (int i=0;i<vCRDowner.GetSize();++i)
-    {
-        EditRes.SetSel(vCRDowner[i]);
-        EditRes.SetSelectionCharFormat(cft);
-    }
-    cft.yOffset = 100;
-    for (int i=0;i<vCRUpper.GetSize();++i)
-    {
-        EditRes.SetSel(vCRUpper[i]);
-        EditRes.SetSelectionCharFormat(cft);
-    }
-    EditRes.Detach();
-}
-#endif
 //up 0下，1上
 //ori 0变卦，1原卦
 int str2gua(CString &in, UINT up, UINT ori){
@@ -623,7 +367,7 @@ bool fC2(TCHAR in, TCHAR ref_b, TCHAR M, TCHAR D, TCHAR H, TCHAR *by)//assume by
         return true;
     }
 }
-void CLottery5Dlg::OnBnClickedButton1()
+void CLottery5Dlg::OnBnClickedButtonAction()
 {
 
     //authenticate and get input
@@ -1429,7 +1173,7 @@ void CLottery5Dlg::AppendGuaContent( CString &csDisplay, CString csForcast )
 void CLottery5Dlg::OnBnClickedButton2()
 {
     // TODO: Add your control notification handler code here
-    OnBnClickedButton1();
+    OnBnClickedButtonAction();
 
     CFileDialog filedg(FALSE,_T("rtf"), NULL, OFN_HIDEREADONLY|OFN_OVERWRITEPROMPT|OFN_EXTENSIONDIFFERENT);
     filedg.m_ofn.lpstrFilter = _T("*.rtf");
@@ -1503,7 +1247,7 @@ void CLottery5Dlg::OnBnClickedGroupadd()
     // TODO: Add your control notification handler code here
     if(nCurrDisplayGroup<3)
         nCurrDisplayGroup++;
-    OnBnClickedButton1();
+    OnBnClickedButtonAction();
 }
 
 void CLottery5Dlg::OnBnClickedGroupsubstract()
@@ -1511,7 +1255,7 @@ void CLottery5Dlg::OnBnClickedGroupsubstract()
     // TODO: Add your control notification handler code here
     if(nCurrDisplayGroup>1)
         nCurrDisplayGroup--;
-    OnBnClickedButton1();
+    OnBnClickedButtonAction();
 }
 
 
@@ -1619,38 +1363,38 @@ void CLottery5Dlg::OnBnClickedButtongetonline()
 		return;
 	}
 	// the target is found, continue to process it;
-	TCHAR theString[256]; // set window text can be happy
+	TCHAR zs[256]; // set window text can be happy
 	CComboBox edits;
 
 	// update the input content
-	MultiByteToWideChar(CP_ACP, NULL, theTarget.get("dataOne1", "000000").asCString(), -1, theString, 256);
+	MultiByteToWideChar(CP_ACP, NULL, theTarget.get("dataOne1", "000000").asCString(), -1, zs, 256);
 	edits.Attach(GetDlgItem(IDC_YAO11+0)->m_hWnd);
-	edits.SetWindowText(theString);
+	edits.SetWindowText(zs);
 	edits.Detach();
 
-	MultiByteToWideChar(CP_ACP, NULL, theTarget.get("dataOne2", "000000").asCString(), -1, theString, 256);
+	MultiByteToWideChar(CP_ACP, NULL, theTarget.get("dataOne2", "000000").asCString(), -1, zs, 256);
 	edits.Attach(GetDlgItem(IDC_YAO11+1)->m_hWnd);
-	edits.SetWindowText(theString);
+	edits.SetWindowText(zs);
 	edits.Detach();
 
-	MultiByteToWideChar(CP_ACP, NULL, theTarget.get("dataTwo1", "000000").asCString(), -1, theString, 256);
+	MultiByteToWideChar(CP_ACP, NULL, theTarget.get("dataTwo1", "000000").asCString(), -1, zs, 256);
 	edits.Attach(GetDlgItem(IDC_YAO11+2)->m_hWnd);
-	edits.SetWindowText(theString);
+	edits.SetWindowText(zs);
 	edits.Detach();	
 
-	MultiByteToWideChar(CP_ACP, NULL, theTarget.get("dataTwo2", "000000").asCString(), -1, theString, 256);
+	MultiByteToWideChar(CP_ACP, NULL, theTarget.get("dataTwo2", "000000").asCString(), -1, zs, 256);
 	edits.Attach(GetDlgItem(IDC_YAO11+3)->m_hWnd);
-	edits.SetWindowText(theString);
+	edits.SetWindowText(zs);
 	edits.Detach();
 
-	MultiByteToWideChar(CP_ACP, NULL, theTarget.get("actionNumber1", "0000000").asCString(), -1, theString, 256);
+	MultiByteToWideChar(CP_ACP, NULL, theTarget.get("actionNumber1", "0000000").asCString(), -1, zs, 256);
 	edits.Attach(GetDlgItem(IDC_EDITISSUE1)->m_hWnd);
-	edits.SetWindowText(theString);
+	edits.SetWindowText(zs);
 	edits.Detach();
 
-	MultiByteToWideChar(CP_ACP, NULL, theTarget.get("actionNumber2", "0000000").asCString(), -1, theString, 256);
+	MultiByteToWideChar(CP_ACP, NULL, theTarget.get("actionNumber2", "0000000").asCString(), -1, zs, 256);
 	edits.Attach(GetDlgItem(IDC_EDITISSUE2)->m_hWnd);
-	edits.SetWindowText(theString);
+	edits.SetWindowText(zs);
 	edits.Detach();
 
 	// fill last group with 000000
@@ -1661,11 +1405,11 @@ void CLottery5Dlg::OnBnClickedButtongetonline()
 	}
 
 	// info
-	MultiByteToWideChar(CP_UTF8, NULL, theTarget.get("userName", "NA").asCString(), -1, theString, 256);
+	MultiByteToWideChar(CP_UTF8, NULL, theTarget.get("userName", "NA").asCString(), -1, zs, 256);
 	CString text2show;
-	text2show += theString;
-	_stprintf(theString, _T(" id号%d"), theTarget.get("ticketUseId", "0").asInt());
-	text2show += theString;
+	text2show += zs;
+	_stprintf(zs, _T(" id号%d"), theTarget.get("ticketUseId", "0").asInt());
+	text2show += zs;
 	edits.Attach(GetDlgItem(IDC_EDITINFO)->m_hWnd);
 	edits.SetWindowText(text2show);
 	edits.Detach();
@@ -1730,38 +1474,38 @@ void CLottery5Dlg::OnBnClickedButtonbirdview()
 	BirdView theBirdView;
 	if(IDOK == theBirdView.DoModal()) {
 		// the target is found, continue to process it;
-		TCHAR theString[256]; // set window text can be happy
+		TCHAR zs[256]; // set window text can be happy
 		CComboBox edits;
 
 		// update the input content
-		MultiByteToWideChar(CP_ACP, NULL, theTarget.get("dataOne1", "000000").asCString(), -1, theString, 256);
+		MultiByteToWideChar(CP_ACP, NULL, theTarget.get("dataOne1", "000000").asCString(), -1, zs, 256);
 		edits.Attach(GetDlgItem(IDC_YAO11+0)->m_hWnd);
-		edits.SetWindowText(theString);
+		edits.SetWindowText(zs);
 		edits.Detach();
 
-		MultiByteToWideChar(CP_ACP, NULL, theTarget.get("dataOne2", "000000").asCString(), -1, theString, 256);
+		MultiByteToWideChar(CP_ACP, NULL, theTarget.get("dataOne2", "000000").asCString(), -1, zs, 256);
 		edits.Attach(GetDlgItem(IDC_YAO11+1)->m_hWnd);
-		edits.SetWindowText(theString);
+		edits.SetWindowText(zs);
 		edits.Detach();
 
-		MultiByteToWideChar(CP_ACP, NULL, theTarget.get("dataTwo1", "000000").asCString(), -1, theString, 256);
+		MultiByteToWideChar(CP_ACP, NULL, theTarget.get("dataTwo1", "000000").asCString(), -1, zs, 256);
 		edits.Attach(GetDlgItem(IDC_YAO11+2)->m_hWnd);
-		edits.SetWindowText(theString);
+		edits.SetWindowText(zs);
 		edits.Detach();	
 
-		MultiByteToWideChar(CP_ACP, NULL, theTarget.get("dataTwo2", "000000").asCString(), -1, theString, 256);
+		MultiByteToWideChar(CP_ACP, NULL, theTarget.get("dataTwo2", "000000").asCString(), -1, zs, 256);
 		edits.Attach(GetDlgItem(IDC_YAO11+3)->m_hWnd);
-		edits.SetWindowText(theString);
+		edits.SetWindowText(zs);
 		edits.Detach();
 
-		MultiByteToWideChar(CP_ACP, NULL, theTarget.get("actionNumber1", "0000000").asCString(), -1, theString, 256);
+		MultiByteToWideChar(CP_ACP, NULL, theTarget.get("actionNumber1", "0000000").asCString(), -1, zs, 256);
 		edits.Attach(GetDlgItem(IDC_EDITISSUE1)->m_hWnd);
-		edits.SetWindowText(theString);
+		edits.SetWindowText(zs);
 		edits.Detach();
 
-		MultiByteToWideChar(CP_ACP, NULL, theTarget.get("actionNumber2", "0000000").asCString(), -1, theString, 256);
+		MultiByteToWideChar(CP_ACP, NULL, theTarget.get("actionNumber2", "0000000").asCString(), -1, zs, 256);
 		edits.Attach(GetDlgItem(IDC_EDITISSUE2)->m_hWnd);
-		edits.SetWindowText(theString);
+		edits.SetWindowText(zs);
 		edits.Detach();
 
 		// fill last group with 000000
@@ -1772,11 +1516,11 @@ void CLottery5Dlg::OnBnClickedButtonbirdview()
 		}
 
 		// info
-		MultiByteToWideChar(CP_UTF8, NULL, theTarget.get("userName", "NA").asCString(), -1, theString, 256);
+		MultiByteToWideChar(CP_UTF8, NULL, theTarget.get("userName", "NA").asCString(), -1, zs, 256);
 		CString text2show;
-		text2show += theString;
-		_stprintf(theString, _T(" id号%d"), theTarget.get("ticketUseId", "0").asInt());
-		text2show += theString;
+		text2show += zs;
+		_stprintf(zs, _T(" id号%d"), theTarget.get("ticketUseId", "0").asInt());
+		text2show += zs;
 		edits.Attach(GetDlgItem(IDC_EDITINFO)->m_hWnd);
 		edits.SetWindowText(text2show);
 		edits.Detach();
@@ -1799,4 +1543,50 @@ void CLottery5Dlg::OnBnClickedButtonautomate()
 	// TODO: Add your control notification handler code here
 	AutomateView V;
 	V.DoModal();
+}
+// Analyze current chosen target
+void CLottery5Dlg::AnalyzeCurrentChosenTarget(double * score)
+{
+	TCHAR zs[256];
+	CEdit edits;
+	// update the input content
+	MultiByteToWideChar(CP_ACP, NULL, theTarget.get("dataOne1", "000000").asCString(), -1, zs, 256);
+	edits.Attach(GetDlgItem(IDC_YAO11+0)->m_hWnd);
+	edits.SetWindowText(zs);
+	edits.Detach();
+	MultiByteToWideChar(CP_ACP, NULL, theTarget.get("dataOne2", "000000").asCString(), -1, zs, 256);
+	edits.Attach(GetDlgItem(IDC_YAO11+1)->m_hWnd);
+	edits.SetWindowText(zs);
+	edits.Detach();
+	MultiByteToWideChar(CP_ACP, NULL, theTarget.get("dataTwo1", "000000").asCString(), -1, zs, 256);
+	edits.Attach(GetDlgItem(IDC_YAO11+2)->m_hWnd);
+	edits.SetWindowText(zs);
+	edits.Detach();	
+	MultiByteToWideChar(CP_ACP, NULL, theTarget.get("dataTwo2", "000000").asCString(), -1, zs, 256);
+	edits.Attach(GetDlgItem(IDC_YAO11+3)->m_hWnd);
+	edits.SetWindowText(zs);
+	edits.Detach();
+	MultiByteToWideChar(CP_ACP, NULL, theTarget.get("actionNumber1", "0000000").asCString(), -1, zs, 256);
+	edits.Attach(GetDlgItem(IDC_EDITISSUE1)->m_hWnd);
+	edits.SetWindowText(zs);
+	edits.Detach();
+	MultiByteToWideChar(CP_ACP, NULL, theTarget.get("actionNumber2", "0000000").asCString(), -1, zs, 256);
+	edits.Attach(GetDlgItem(IDC_EDITISSUE2)->m_hWnd);
+	edits.SetWindowText(zs);
+	edits.Detach();
+	// fill last group with 000000
+	for(int i=4;i<6;i++){
+		edits.Attach(GetDlgItem(IDC_YAO11+i)->m_hWnd);
+		edits.SetWindowText(_T("000000"));
+		edits.Detach();
+	}
+	// TODO: why is this value weird if not set to 1
+	nCurrDisplayGroup = 1;
+	OnBnClickedButtonAction();
+	CEdit w;
+	w.Attach(GetDlgItem(IDC_SCORE1)->m_hWnd);w.GetWindowText(zs, 256);w.Detach();	score[0] = _tstof(zs);
+	w.Attach(GetDlgItem(IDC_SCORE2)->m_hWnd);w.GetWindowText(zs, 256);w.Detach();	score[1] = _tstof(zs);
+	OnBnClickedGroupadd();
+	w.Attach(GetDlgItem(IDC_SCORE1)->m_hWnd);w.GetWindowText(zs, 256);w.Detach();	score[2] = _tstof(zs);
+	w.Attach(GetDlgItem(IDC_SCORE2)->m_hWnd);w.GetWindowText(zs, 256);w.Detach();	score[3] = _tstof(zs);
 }

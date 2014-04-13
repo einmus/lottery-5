@@ -23,5 +23,7 @@ public:
 
 	static UINT __cdecl MyControllingFunction( LPVOID pParam );
 private:
-	CWinThread* m_Thread;
+	CWinThread* m_thread;
+public:
+	afx_msg void OnClose();
 };

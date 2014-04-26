@@ -107,6 +107,8 @@ UINT __cdecl AutomateView::MyControllingFunction( LPVOID pParam )
 	p.Attach(v->GetDlgItem(IDC_PROGRESSAUTOMATE)->m_hWnd);
 	int s = theRecords.size();
 	p.SetRange32(0, theRecords.size());
+
+	CInternetSession theSession;
 	for( ; nLoopCount < theRecords.size(); nLoopCount++) {
 		double s[4];
 		{ // get score
@@ -117,12 +119,43 @@ UINT __cdecl AutomateView::MyControllingFunction( LPVOID pParam )
 			sprintf(zs, "%d%d", s[0] > s[1] ? 1 : 2, s[2] > s[3] ? 1 : 2);
 			theRecords[nLoopCount]["analyseState"] = zs;
 		}
+
+		CString s_info;FillItemContent(s_info, theRecords[nLoopCount]);
+
 		{ // send back to server
+			int targetid = theTarget.get("ticketUseId", "0").asInt();
+			TCHAR theURL[256];
+			_stprintf(theURL, _T("http://115.28.141.187/TicketManager/recordAction!submitTicketAnalyseState.action?ticketUseId=%d&analyseState=%d%d"), targetid, s[0] > s[1] ? 1 : 2, s[2] > s[3] ? 1 : 2);
+			CHttpFile* theContent = (CHttpFile*)theSession.OpenURL(theURL);
+			CString str;
+			theContent->QueryInfo(HTTP_QUERY_CONTENT_LENGTH, str);
+			size_t theContentLength = _ttoi(LPCTSTR(str));
+			if(theContentLength > 5000000) {
+				// 5MB, too big? TODO: do something
+				//assert(0);
+			} else if (theContentLength < 5) { // too little, one record is 252
+				v->MessageBox(_T("数据通信有误!"));
+				return -1;
+			}
+			char* pBuffer = (char*)malloc(theContentLength);
+			theContent->Read(pBuffer, theContentLength);
+			Json::Reader theReader;
+			Json::Value theRoot;
+			if(theReader.parse(pBuffer, theRoot)) {
+				int returncode = theRoot.get("code", 0).asInt();
+				if(returncode == 1) {
+					s_info += _T("\r\n上传成功");
+				} else {
+					s_info += _T("\r\n上传失败");
+				}
+			} else {
+				s_info += _T("\r\n上传失败");
+			}
+			free(pBuffer);
 		}
 		{ // update infos
-			CString s;FillItemContent(s, theRecords[nLoopCount]);
 			CEdit e;e.Attach(v->GetDlgItem(IDC_EDITAUTOMATEINFO)->m_hWnd);
-			e.SetWindowText(s);
+			e.SetWindowText(s_info);
 			e.Detach();
 		}
 		p.SetPos(nLoopCount);

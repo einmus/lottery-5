@@ -1350,7 +1350,7 @@ void CLottery5Dlg::OnBnClickedButtongetonline()
 		g_SourceMode = ONLINE_DOWNLOAD;
 	}
 	for(;nLoopCount<theRecords.size();nLoopCount++) {
-		CString t("00");
+		CString t("0");
 		if(theRecords[nLoopCount].get("analyseState", 1).asCString() == t) {
 			// found a match
 			theTarget = theRecords[nLoopCount];

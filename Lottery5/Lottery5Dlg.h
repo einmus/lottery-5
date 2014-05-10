@@ -70,4 +70,6 @@ public:
 	afx_msg void OnBnClickedButtonautomate();
 	// Analyze current chosen target
 	void AnalyzeCurrentChosenTarget(double * score);
+	afx_msg LRESULT OnParamChanged(WPARAM wparam , LPARAM lparam);
+	afx_msg void OnBnClickedButtonShowParam();
 };

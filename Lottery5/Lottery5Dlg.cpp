@@ -10,6 +10,7 @@
 #include <Richedit.h>
 #include "BirdView.h"
 #include "AutomateView.h"
+#include "ParameterView.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -116,6 +117,8 @@ BEGIN_MESSAGE_MAP(CLottery5Dlg, CDialog)
 	ON_BN_CLICKED(IDC_BUTTONMARK, &CLottery5Dlg::OnBnClickedButtonmark)
 	ON_BN_CLICKED(IDC_BUTTONBIRDVIEW, &CLottery5Dlg::OnBnClickedButtonbirdview)
 	ON_BN_CLICKED(IDC_BUTTONAUTOMATE, &CLottery5Dlg::OnBnClickedButtonautomate)
+	ON_MESSAGE(MY_PARAM_MSG, &CLottery5Dlg::OnParamChanged)
+	ON_BN_CLICKED(IDC_BUTTONSHOWPARAM, &CLottery5Dlg::OnBnClickedButtonShowParam)
 END_MESSAGE_MAP()
 
 
@@ -390,15 +393,6 @@ void CLottery5Dlg::OnBnClickedButtonAction()
     edits.Attach(GetDlgItem(IDC_CASE1)->m_hWnd);edits.GetLBText(edits.GetCurSel(),tt);edits.Detach();FP[0]= tt[0];
     edits.Attach(GetDlgItem(IDC_CASE2)->m_hWnd);edits.GetLBText(edits.GetCurSel(),tt);edits.Detach();FP[1]= tt[0];
     edits.Attach(GetDlgItem(IDC_CASE3)->m_hWnd);edits.GetLBText(edits.GetCurSel(),tt);edits.Detach();FB= tt[0];
-#if 0
-    //hahamark
-    r[0] = _T("111222");
-    r[1] = _T("112221");
-    r[2] = _T("012120");
-    r[3] = _T("123321");
-    r[4] = _T("012123");
-    r[5] = _T("013320");
-#endif
     {
         TCHAR cText[256];CString text;CEdit box;
         edits.Attach(GetDlgItem(IDC_WEI1+nCurrDisplayGroup-1)->m_hWnd);edits.GetLBText(edits.GetCurSel(), cText);edits.Detach();
@@ -1589,4 +1583,22 @@ void CLottery5Dlg::AnalyzeCurrentChosenTarget(double * score)
 	OnBnClickedGroupadd();
 	w.Attach(GetDlgItem(IDC_SCORE1)->m_hWnd);w.GetWindowText(zs, 256);w.Detach();	score[2] = _tstof(zs);
 	w.Attach(GetDlgItem(IDC_SCORE2)->m_hWnd);w.GetWindowText(zs, 256);w.Detach();	score[3] = _tstof(zs);
+}
+
+afx_msg LRESULT CLottery5Dlg::OnParamChanged(WPARAM wparam , LPARAM lparam)
+{
+	MessageBox(_T("hello"));
+	OnBnClickedButtonAction();
+	return  NULL;
+}
+
+void CLottery5Dlg::OnBnClickedButtonShowParam()
+{
+	// TODO: Add your control notification handler code here
+	MyParam p;
+	for (int i = 0; i < 12*6; i++) {
+		((unsigned int*)&p)[i] = 2;
+	}
+	ParameterView v(p, this);
+	v.DoModal();
 }

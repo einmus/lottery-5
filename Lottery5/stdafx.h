@@ -46,6 +46,16 @@ enum SOURCEMODE {
 	ONLINE_DOWNLOAD,
 	LOCAL_INPUT
 };
+#define MY_PARAM_MSG WM_APP + 4
+struct MyParam 
+{
+	unsigned int  N[12]; //年
+	unsigned int  Y[12]; //月
+	unsigned int  R[12]; //日
+	unsigned int  S[12]; //时
+	unsigned int  D[12]; //动
+	unsigned int  B[12]; //变
+};
 
 
 

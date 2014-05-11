@@ -47,6 +47,7 @@ private:
     CBitmap m_Gua[8];
     int bInitialResult;
     UINT nCurrDisplayGroup;
+	MyParam  m_p;
 
 public:
     afx_msg void OnDestroy();

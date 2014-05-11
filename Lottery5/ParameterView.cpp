@@ -136,6 +136,16 @@ void ParameterView::OnEnChangeEdit()
 	// with the ENM_CHANGE flag ORed into the mask.
 
 	// TODO:  Add your control notification handler code here
-	if(m_bInitialized)
+	
+	if(m_bInitialized) {
+		// get current score params		
+		CEdit * e = NULL;
+		TCHAR t[256];
+		for (int i = 0; i < 12*6; i++) {
+			e = (CEdit *)(GetDlgItem(IDC_EDIT1201 + i));
+			e->GetWindowText(t, 256);
+			((unsigned int*)&m_p)[i] = _ttoi(t);
+		}
 		GetParent()->SendMessage(MY_PARAM_MSG, WPARAM (&m_p), NULL);
+	}
 }

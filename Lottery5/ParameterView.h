@@ -8,7 +8,7 @@ class ParameterView : public CDialog
 	DECLARE_DYNAMIC(ParameterView)
 
 public:
-	ParameterView(MyParam p, CWnd* pParent = NULL);   // standard constructor
+	ParameterView(CWnd* pParent = NULL);   // standard constructor
 	virtual ~ParameterView();
 
 // Dialog Data
@@ -23,5 +23,6 @@ public:
 	afx_msg void OnEnChangeEdit();
 private:
 	bool m_bInitialized;
-	MyParam m_p;
+public:
+	afx_msg void OnBnClickedButtonSave();
 };

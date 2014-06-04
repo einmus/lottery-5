@@ -5,15 +5,15 @@
 #include "Lottery5.h"
 #include "ParameterView.h"
 
-
+extern const TCHAR g_szIni[MAX_PATH];
+extern MyParam g_p[64];
 // ParameterView dialog
 
 IMPLEMENT_DYNAMIC(ParameterView, CDialog)
 
-ParameterView::ParameterView(MyParam p, CWnd* pParent /*=NULL*/)
+ParameterView::ParameterView(CWnd* pParent /*=NULL*/)
 	: CDialog(ParameterView::IDD, pParent)
 	, m_bInitialized(false)
-	, m_p(p)
 {
 
 }
@@ -101,6 +101,7 @@ BEGIN_MESSAGE_MAP(ParameterView, CDialog)
 	ON_EN_CHANGE(IDC_EDIT1270, &ParameterView::OnEnChangeEdit)
 	ON_EN_CHANGE(IDC_EDIT1271, &ParameterView::OnEnChangeEdit)
 	ON_EN_CHANGE(IDC_EDIT1272, &ParameterView::OnEnChangeEdit)
+	ON_BN_CLICKED(IDC_BUTTONSAVE, &ParameterView::OnBnClickedButtonSave)
 END_MESSAGE_MAP()
 
 
@@ -117,7 +118,7 @@ BOOL ParameterView::OnInitDialog()
 	TCHAR c[256];
 	for (int i = 0; i < 12*6; i++) {
 		e = (CEdit *)(GetDlgItem(IDC_EDIT1201 + i));
-		_stprintf(c, _T("%d"), ((unsigned int*)&m_p)[i]);
+		_stprintf(c, _T("%d"), ((unsigned int*)&(g_p[0]))[i]);
 		e->SetWindowText(c);
 		s = (CSpinButtonCtrl *)(GetDlgItem(IDC_SPIN1201 + i));
 		s->SetBuddy(e);
@@ -144,8 +145,31 @@ void ParameterView::OnEnChangeEdit()
 		for (int i = 0; i < 12*6; i++) {
 			e = (CEdit *)(GetDlgItem(IDC_EDIT1201 + i));
 			e->GetWindowText(t, 256);
-			((unsigned int*)&m_p)[i] = _ttoi(t);
+			((unsigned int*)&(g_p[0]))[i] = _ttoi(t);
 		}
-		GetParent()->SendMessage(MY_PARAM_MSG, WPARAM (&m_p), NULL);
+		GetParent()->SendMessage(MY_PARAM_MSG, NULL, NULL);
 	}
+}
+
+void ParameterView::OnBnClickedButtonSave()
+{
+	// TODO: Add your control notification handler code here
+	TCHAR szPath[MAX_PATH];
+	if (SUCCEEDED(SHGetFolderPath(NULL, CSIDL_APPDATA, NULL, 0, szPath)))
+	{
+		_tcscat(szPath, _T("\\"));
+		_tcscat(szPath, g_szIni);
+		FILE * pf = _tfopen(szPath, _T("w"));
+		if (pf != NULL) {
+			for(int g = 0; g < 64; g++) {
+				for(int j = 0; j < 6; j ++) {
+					for (int i = 0; i < 12; i ++)  {
+						_ftprintf(pf, _T("%d "), ((unsigned int*)&(g_p[g]))[i + j * 12]);
+					}
+					_fputtc(_T('\n'), pf);
+				}
+			}
+			fclose(pf);
+		} else ASSERT(0);
+	} else ASSERT(0);
 }

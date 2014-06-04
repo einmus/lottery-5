@@ -47,13 +47,12 @@ private:
     CBitmap m_Gua[8];
     int bInitialResult;
     UINT nCurrDisplayGroup;
-	MyParam  m_p;
 
 public:
     afx_msg void OnDestroy();
     afx_msg void OnBnClickedGroupadd();
     afx_msg void OnBnClickedGroupsubstract();
-    void DisplayBallonTip(int nID);
+    void DisplayBallonTip(int iID);
     afx_msg void OnCbnSelchangeWei1(){if(bInitialResult)OnBnClickedButtonAction();}
     afx_msg void OnCbnSelchangeWei2(){if(bInitialResult)OnBnClickedButtonAction();}
     afx_msg void OnCbnSelchangeWei3(){if(bInitialResult)OnBnClickedButtonAction();}
@@ -64,7 +63,7 @@ public:
     afx_msg void OnCbnSelchangeCase2(){if(bInitialResult)OnBnClickedButtonAction();}
     afx_msg void OnCbnSelchangeCase3(){if(bInitialResult)OnBnClickedButtonAction();}
     afx_msg void OnBnClickedButtonclear();
-	afx_msg void OnBnClickedButtonrandom();
+	afx_msg void OnBnClickedButtonRandom();
 	afx_msg void OnBnClickedButtongetonline();
 	afx_msg void OnBnClickedButtonmark();
 	afx_msg void OnBnClickedButtonbirdview();

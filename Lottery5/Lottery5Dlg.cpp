@@ -23,6 +23,8 @@ Json::Value theRecords; // all records of current session
 char * m_pDownloadedBuffer; // the downloaded buffer
 SOURCEMODE g_SourceMode;
 extern const TCHAR gcURL[] = _T("http://115.28.141.187/TicketManager/recordAction!searchTicket.action?pageSize=10000");
+extern const TCHAR g_szIni[MAX_PATH];
+const TCHAR g_szIni[MAX_PATH] = _T("caipiao.ini");
 
 const TCHAR SIXTYFOURGUA[] = _T("地天泰 山天大畜水天需 风天小畜雷天大壮火天大有泽天夬 乾为天 地泽临 山泽损 水泽节 风泽中孚雷泽归妹火泽睽 兑为泽 天泽履 地火明夷山火贲 水火既济风火家人雷火豊 离为火 泽火革 天火同人地雷复 山雷颐 水雷屯 风雷益 震为雷 火雷噬嗑泽雷随 天雷无妄地风升 山风蛊 水风井 巽为风 雷风恒 火风鼎 泽风大过天风姤 地水师 山水蒙 坎为水 风水涣 雷水解 火水未济泽水困 天水讼 地山谦 艮为山 水山蹇 风山渐 雷山小过火山旅 泽山咸 天山遁 坤为地 山地剥 水地比 风地观 雷地豫 火地晋 泽地萃 天地否 ");
 const TCHAR EIGHTGUA[] = _T("☰☱☲☳☴☵☶☷");
@@ -34,6 +36,7 @@ TCHAR * BXContent[] = {_T("父母壬戌土、世"), _T("兄弟壬申金、"), _T
 CArray<CHARRANGE> vCRUpper; 
 CArray<CHARRANGE>  vCRDowner;
 
+MyParam g_p[64];
 //#include <vector>
 //using namespace std;
 // 用于应用程序“关于”菜单项的 CAboutDlg 对话框
@@ -112,7 +115,7 @@ BEGIN_MESSAGE_MAP(CLottery5Dlg, CDialog)
     ON_CBN_SELCHANGE(IDC_CASE2, &CLottery5Dlg::OnCbnSelchangeCase2)
     ON_CBN_SELCHANGE(IDC_CASE3, &CLottery5Dlg::OnCbnSelchangeCase3)
     ON_BN_CLICKED(IDC_BUTTONCLEAR, &CLottery5Dlg::OnBnClickedButtonclear)
-	ON_BN_CLICKED(IDC_BUTTONRANDOM, &CLottery5Dlg::OnBnClickedButtonrandom)
+	ON_BN_CLICKED(IDC_BUTTONRANDOM, &CLottery5Dlg::OnBnClickedButtonRandom)
 	ON_BN_CLICKED(IDC_BUTTONGETONLINE, &CLottery5Dlg::OnBnClickedButtongetonline)
 	ON_BN_CLICKED(IDC_BUTTONMARK, &CLottery5Dlg::OnBnClickedButtonmark)
 	ON_BN_CLICKED(IDC_BUTTONBIRDVIEW, &CLottery5Dlg::OnBnClickedButtonbirdview)
@@ -200,10 +203,40 @@ BOOL CLottery5Dlg::OnInitDialog()
 	nLoopCount = 0;
 
 	// default score parameters	
-	srand(time(0));
-	for (int i = 0; i < 12*6; i++) {
-		((unsigned int*)&m_p)[i] = rand()%10;
-	}
+	// open configuration file in %APP_DATA% and read it, if it misses some value, random fill them
+	// if the configuration file does not exist, random generate all values
+	// for 64 guas, every gua have its properties
+	TCHAR szPath[MAX_PATH];
+	if (SUCCEEDED(SHGetFolderPath(NULL, CSIDL_APPDATA, NULL, 0, szPath)))
+	{
+		_tcscat(szPath, _T("\\"));
+		_tcscat(szPath, g_szIni);
+		FILE * pf = _tfopen(szPath, _T("r"));
+		if (pf != NULL) {	
+			try {
+				for (int i = 0; i < 12*6*64; i++) {
+					if(1 != _ftscanf(pf, _T("%d"), &((unsigned int*)g_p)[i]))
+						throw i;
+				}
+			}
+			catch (int index) {
+				TCHAR szT[MAX_PATH];
+				_stprintf(szT, _T("配置文件读取第%d项错误，现在随机生成之后的参数。\n默认配置文件保存在%s\n请调整或导入以后保存默认配置文件！"), index, szPath);
+				MessageBox(szT);
+				srand(time(0));
+				for (int i = index; i < 12*6*64; i++) {
+					((unsigned int*)g_p)[i] = rand()%10;
+				}
+			}
+			fclose(pf);
+		} else {
+			MessageBox(_T("配置文件不存在，现在随机生成一组参数，请调整或导入配置文件以后保存默认配置文件！"));
+			srand(time(0));
+			for (int i = 0; i < 12*6*64; i++) {
+				((unsigned int*)g_p)[i] = rand()%10;
+			}
+		}
+	} else ASSERT(0);
     return TRUE;  // 除非将焦点设置到控件，否则返回 TRUE
 }
 
@@ -512,43 +545,35 @@ void CLottery5Dlg::OnBnClickedButtonAction()
     {
         //display gua pics
         //original gua 
-        CStatic picturecontrol;
+		CStatic * s = NULL;
         for(int i=0;i<4;i++){
-            picturecontrol.Attach(GetDlgItem(IDC_STATIC0+i)->m_hWnd);
-            picturecontrol.SetBitmap((HBITMAP)m_Gua[nResults[0][i]].GetSafeHandle());
-            picturecontrol.Detach();
-            picturecontrol.Attach(GetDlgItem(IDC_STATIC0+i)->m_hWnd);
-            picturecontrol.SetBitmap((HBITMAP)m_Gua[nResults[0][i]].GetSafeHandle());
-            picturecontrol.Detach();
+			s = (CStatic *)(GetDlgItem(IDC_STATIC0+i));
+            s->SetBitmap((HBITMAP)m_Gua[nResults[0][i]].GetSafeHandle());
         }
         //transformed gua
         //item 1
         for(int i=0;i<2;i++){
-            picturecontrol.Attach(GetDlgItem(IDC_STATIC4+i)->m_hWnd);
-            picturecontrol.SetBitmap(b[0]?(HBITMAP)m_Gua[nResults[1][i]].GetSafeHandle():NULL);
-            picturecontrol.Detach();
+            s = (CStatic *)(GetDlgItem(IDC_STATIC4+i));
+            s->SetBitmap(b[0]?(HBITMAP)m_Gua[nResults[1][i]].GetSafeHandle():NULL);
         }
         //item 2
         for(int i=2;i<4;i++){
-            picturecontrol.Attach(GetDlgItem(IDC_STATIC4+i)->m_hWnd);
-            picturecontrol.SetBitmap(b[1]?(HBITMAP)m_Gua[nResults[1][i]].GetSafeHandle():NULL);
-            picturecontrol.Detach();
+            s = (CStatic *)(GetDlgItem(IDC_STATIC4+i));
+            s->SetBitmap(b[1]?(HBITMAP)m_Gua[nResults[1][i]].GetSafeHandle():NULL);
         }
         //ticks
         for(int i=0;i<6;i++){
-            picturecontrol.Attach(GetDlgItem(IDC_STATIC11+i)->m_hWnd);
-            picturecontrol.SetWindowText(
+            s = (CStatic *)(GetDlgItem(IDC_STATIC11+i));
+            s->SetWindowText(
                 r[nCurrDisplayGroup*2-2][5 - i] == _T('3')?_T("o") :
                 (r[nCurrDisplayGroup*2-2][5 - i] == _T('0')?_T("x") : _T(" "))
                 );
-            picturecontrol.Detach();    
             
-            picturecontrol.Attach(GetDlgItem(IDC_STATIC17+i)->m_hWnd);
-            picturecontrol.SetWindowText(
+            s = (CStatic *)(GetDlgItem(IDC_STATIC17+i));
+            s->SetWindowText(
                 r[nCurrDisplayGroup*2-1][5 - i] == _T('3')?_T("o") :
                 (r[nCurrDisplayGroup*2-1][5 - i] == _T('0')?_T("x") : _T(" "))
                 );
-            picturecontrol.Detach();
         }
     }
     {
@@ -763,13 +788,13 @@ void CLottery5Dlg::OnBnClickedButtonAction()
             TCHAR M =( fC(Mo, FP[0], Mo, Do, Ho, byo[ii])&&fC(Mo, FP[1], Mo, Do, Ho, byo[ii]))||fC2(Mo, FB, Mo, Do, Ho, byo[ii]) ? Mo:NULL;
             TCHAR D =( fC(Do, FP[0], Mo, Do, Ho, byo[ii])&&fC(Do, FP[1], Mo, Do, Ho, byo[ii]))||fC2(Do, FB, Mo, Do, Ho, byo[ii]) ? Do:NULL;
             TCHAR H =( fC(Ho, FP[0], Mo, Do, Ho, byo[ii])&&fC(Ho, FP[1], Mo, Do, Ho, byo[ii]))||fC2(Ho, FB, Mo, Do, Ho, byo[ii]) ? Ho:NULL;		
-			scoreOne = Y?m_p.N[I(Y)]:0 + M?m_p.Y[I(M)]:0 + D?m_p.R[I(D)]:0 + H?m_p.S[I(H)]:0 + H?m_p.S[I(H)]:0;
+			scoreOne = Y?(g_p[0]).N[I(Y)]:0 + M?(g_p[0]).Y[I(M)]:0 + D?(g_p[0]).R[I(D)]:0 + H?(g_p[0]).S[I(H)]:0 + H?(g_p[0]).S[I(H)]:0;
             for (int jj=0;jj<6;jj++)
             {
                 by[ii][jj] = (fC(byo[ii][jj], FP[0], Mo, Do, Ho, byo[ii])&&fC(byo[ii][jj], FP[1], Mo, Do, Ho, byo[ii]))||fC2(byo[ii][jj], FB, Mo, Do, Ho, byo[ii]) ? byo[ii][jj]:NULL;
-				scoreOne += by[ii][jj]?m_p.B[I(by[ii][jj])]:0;
+				scoreOne += by[ii][jj]?(g_p[0]).B[I(by[ii][jj])]:0;
                 dy[ii][jj] = (fC(dyo[ii][jj], FP[0], Mo, Do, Ho, byo[ii])&&fC(dyo[ii][jj], FP[1], Mo, Do, Ho, byo[ii]))||fC2(dyo[ii][jj], FB, Mo, Do, Ho, byo[ii]) ? dyo[ii][jj]:NULL;
-				scoreOne += dy[ii][jj]?m_p.D[I(dy[ii][jj])]:0;
+				scoreOne += dy[ii][jj]?(g_p[0]).D[I(dy[ii][jj])]:0;
             }
 
             ii = 1;
@@ -777,13 +802,13 @@ void CLottery5Dlg::OnBnClickedButtonAction()
             M = (fC(Mo, FP[0], Mo, Do, Ho, byo[ii])&&fC(Mo, FP[1], Mo, Do, Ho, byo[ii]))||fC2(Mo, FB, Mo, Do, Ho, byo[ii]) ? Mo:NULL;
             D = (fC(Do, FP[0], Mo, Do, Ho, byo[ii])&&fC(Do, FP[1], Mo, Do, Ho, byo[ii]))||fC2(Do, FB, Mo, Do, Ho, byo[ii]) ? Do:NULL;
             H = (fC(Ho, FP[0], Mo, Do, Ho, byo[ii])&&fC(Ho, FP[1], Mo, Do, Ho, byo[ii]))||fC2(Ho, FB, Mo, Do, Ho, byo[ii]) ? Ho:NULL;
-			scoreTwo = Y?m_p.N[I(Y)]:0 + M?m_p.Y[I(M)]:0 + D?m_p.R[I(D)]:0 + H?m_p.S[I(H)]:0 + H?m_p.S[I(H)]:0;
+			scoreTwo = Y?(g_p[0]).N[I(Y)]:0 + M?(g_p[0]).Y[I(M)]:0 + D?(g_p[0]).R[I(D)]:0 + H?(g_p[0]).S[I(H)]:0 + H?(g_p[0]).S[I(H)]:0;
             for (int jj=0;jj<6;jj++)
             {
                 by[ii][jj] = (fC(byo[ii][jj], FP[0], Mo, Do, Ho, byo[ii])&&fC(byo[ii][jj], FP[1], Mo, Do, Ho, byo[ii]))||fC2(byo[ii][jj], FB, Mo, Do, Ho, byo[ii]) ? byo[ii][jj]:NULL;
-				scoreTwo += by[ii][jj]?m_p.B[I(by[ii][jj])]:0;
+				scoreTwo += by[ii][jj]?(g_p[0]).B[I(by[ii][jj])]:0;
                 dy[ii][jj] = (fC(dyo[ii][jj], FP[0], Mo, Do, Ho, byo[ii])&&fC(dyo[ii][jj], FP[1], Mo, Do, Ho, byo[ii]))||fC2(dyo[ii][jj], FB, Mo, Do, Ho, byo[ii]) ? dyo[ii][jj]:NULL;
-				scoreTwo += by[ii][jj]?m_p.B[I(by[ii][jj])]:0;
+				scoreTwo += by[ii][jj]?(g_p[0]).B[I(by[ii][jj])]:0;
             }
             TCHAR boxtext[256];
             if(F[0])_stprintf(boxtext, _T("%.1f\r\n分"), scoreOne);else _stprintf(boxtext, _T("?\r\n分"));
@@ -1067,13 +1092,12 @@ void CLottery5Dlg::OnBnClickedGroupsubstract()
 }
 
 
-void CLottery5Dlg::DisplayBallonTip(int nID)
+void CLottery5Dlg::DisplayBallonTip(int iID)
 {
-    //预测输入错误
-    CEdit ceForecast;
-    ceForecast.Attach(GetDlgItem(nID)->m_hWnd);
-    ceForecast.ShowBalloonTip(_T("数据有误！"),_T("在这里输入完整的上下卦信息。用1代表一，2代表--，0代表x变卦，3代表o变卦。从下往上输入！"),TTI_ERROR);
-    ceForecast.Detach();
+	//预测输入错误
+	CEdit * e = (CEdit *) GetDlgItem(iID);
+	if(e) e->ShowBalloonTip(_T("数据有误！"),
+		_T("在这里输入完整的上下卦信息。用1代表一，2代表--，0代表x变卦，3代表o变卦。从下往上输入！"),TTI_ERROR);
 }
 
 void CLottery5Dlg::OnBnClickedButtonclear()
@@ -1115,7 +1139,7 @@ void CLottery5Dlg::OnBnClickedButtonclear()
 	curr.Attach(GetDlgItem(IDC_YAO11)->m_hWnd);curr.SetFocus();curr.Detach();
 }
 
-void CLottery5Dlg::OnBnClickedButtonrandom()
+void CLottery5Dlg::OnBnClickedButtonRandom()
 {
 	// TODO: Add your control notification handler code here
 	srand(time(0));
@@ -1401,14 +1425,14 @@ void CLottery5Dlg::AnalyzeCurrentChosenTarget(double * score)
 
 afx_msg LRESULT CLottery5Dlg::OnParamChanged(WPARAM wparam , LPARAM lparam)
 {
-	m_p = *((MyParam*) wparam);
+	// parameters changed
 	OnBnClickedButtonAction();
-	return  NULL;
+	return NULL;
 }
 
 void CLottery5Dlg::OnBnClickedButtonShowParam()
 {
 	// TODO: Add your control notification handler code here
-	ParameterView v(m_p, this);
+	ParameterView v;
 	v.DoModal();
 }

@@ -139,8 +139,12 @@
 #define IDC_SPIN2                       1097
 #define IDC_BUTTON1                     1097
 #define IDC_BUTTONSHOWPARAM             1097
+#define IDC_BUTTONSAVE                  1097
 #define IDC_SPIN3                       1098
+#define IDC_BUTTONIMPORT                1098
 #define IDC_SPIN4                       1099
+#define IDC_BUTTON5                     1099
+#define IDC_BUTTONEXPORT                1099
 #define IDC_SPIN5                       1100
 #define IDC_YAO11                       1101
 #define IDC_SPIN6                       1101

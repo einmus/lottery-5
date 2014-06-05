@@ -12,6 +12,7 @@
 #include "AutomateView.h"
 #include "ParameterView.h"
 
+
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
@@ -26,6 +27,7 @@ extern const TCHAR gcURL[] = _T("http://115.28.141.187/TicketManager/recordActio
 extern const TCHAR g_szIni[MAX_PATH];
 const TCHAR g_szIni[MAX_PATH] = _T("caipiao.ini");
 
+extern const TCHAR SIXTYFOURGUA[64*4+1];
 const TCHAR SIXTYFOURGUA[] = _T("地天泰 山天大畜水天需 风天小畜雷天大壮火天大有泽天夬 乾为天 地泽临 山泽损 水泽节 风泽中孚雷泽归妹火泽睽 兑为泽 天泽履 地火明夷山火贲 水火既济风火家人雷火豊 离为火 泽火革 天火同人地雷复 山雷颐 水雷屯 风雷益 震为雷 火雷噬嗑泽雷随 天雷无妄地风升 山风蛊 水风井 巽为风 雷风恒 火风鼎 泽风大过天风姤 地水师 山水蒙 坎为水 风水涣 雷水解 火水未济泽水困 天水讼 地山谦 艮为山 水山蹇 风山渐 雷山小过火山旅 泽山咸 天山遁 坤为地 山地剥 水地比 风地观 雷地豫 火地晋 泽地萃 天地否 ");
 const TCHAR EIGHTGUA[] = _T("☰☱☲☳☴☵☶☷");
 const TCHAR SHICHEN[] = _T("子丑寅卯辰巳午未申酉戌亥");
@@ -72,7 +74,7 @@ CAboutDlg::CAboutDlg() : CDialog(CAboutDlg::IDD)
 
 void CAboutDlg::DoDataExchange(CDataExchange* pDX)
 {
-    CDialog::DoDataExchange(pDX);
+	CDialog::DoDataExchange(pDX);
 }
 
 BEGIN_MESSAGE_MAP(CAboutDlg, CDialog)
@@ -92,7 +94,7 @@ CLottery5Dlg::CLottery5Dlg(CWnd* pParent /*=NULL*/)
 
 void CLottery5Dlg::DoDataExchange(CDataExchange* pDX)
 {
-    CDialog::DoDataExchange(pDX);
+	CDialog::DoDataExchange(pDX);
 }
 
 BEGIN_MESSAGE_MAP(CLottery5Dlg, CDialog)
@@ -118,10 +120,14 @@ BEGIN_MESSAGE_MAP(CLottery5Dlg, CDialog)
 	ON_BN_CLICKED(IDC_BUTTONRANDOM, &CLottery5Dlg::OnBnClickedButtonRandom)
 	ON_BN_CLICKED(IDC_BUTTONGETONLINE, &CLottery5Dlg::OnBnClickedButtongetonline)
 	ON_BN_CLICKED(IDC_BUTTONMARK, &CLottery5Dlg::OnBnClickedButtonmark)
-	ON_BN_CLICKED(IDC_BUTTONBIRDVIEW, &CLottery5Dlg::OnBnClickedButtonbirdview)
+	ON_BN_CLICKED(IDC_BUTTONBIRDVIEW, &CLottery5Dlg::OnBnClickedButtonBirdview)
 	ON_BN_CLICKED(IDC_BUTTONAUTOMATE, &CLottery5Dlg::OnBnClickedButtonautomate)
 	ON_MESSAGE(MY_PARAM_MSG, &CLottery5Dlg::OnParamChanged)
 	ON_BN_CLICKED(IDC_BUTTONSHOWPARAM, &CLottery5Dlg::OnBnClickedButtonShowParam)
+	ON_BN_CLICKED(IDC_BUTTON_P0, &CLottery5Dlg::OnBnClickedButtonP0)
+	ON_BN_CLICKED(IDC_BUTTON_P1, &CLottery5Dlg::OnBnClickedButtonP1)
+	ON_BN_CLICKED(IDC_BUTTON_P2, &CLottery5Dlg::OnBnClickedButtonP2)
+	ON_BN_CLICKED(IDC_BUTTON_P3, &CLottery5Dlg::OnBnClickedButtonP3)
 END_MESSAGE_MAP()
 
 
@@ -446,7 +452,7 @@ void CLottery5Dlg::OnBnClickedButtonAction()
     CString r[6];
     TCHAR FP[2]={_T('子'),_T('申')}, FB = _T('戌');
 #if 1
-    for(int i=0;i<6;i++){
+    for(int i=0;i<4;i++){
         edits.Attach(GetDlgItem(IDC_YAO11+i)->m_hWnd);
         edits.GetWindowText(r[i]);
         edits.Detach();
@@ -481,21 +487,27 @@ void CLottery5Dlg::OnBnClickedButtonAction()
             b[1] = true;
     }
     nResults[0][0] = str2gua(r[nCurrDisplayGroup*2-2], 1, 1);
-    nResults[0][1] = str2gua(r[nCurrDisplayGroup*2-2], 0, 1);
-    nResults[0][2] = str2gua(r[nCurrDisplayGroup*2-1], 1, 1);
-    nResults[0][3] = str2gua(r[nCurrDisplayGroup*2-1], 0, 1);
-    if(b[0])
-    {
-        nResults[1][0] = str2gua(r[nCurrDisplayGroup*2-2], 1, 0);
-        nResults[1][1] = str2gua(r[nCurrDisplayGroup*2-2], 0, 0);
-    }
-    if(b[1])
-    {
-        nResults[1][2] = str2gua(r[nCurrDisplayGroup*2-1], 1, 0);
-        nResults[1][3] = str2gua(r[nCurrDisplayGroup*2-1], 0, 0);
-    }
-    {
-        //update group number;
+	nResults[0][1] = str2gua(r[nCurrDisplayGroup*2-2], 0, 1);
+	nResults[0][2] = str2gua(r[nCurrDisplayGroup*2-1], 1, 1);
+	nResults[0][3] = str2gua(r[nCurrDisplayGroup*2-1], 0, 1);
+	CButton * b4p = (CButton *)GetDlgItem(IDC_BUTTON_P0);
+	b4p->ShowWindow(SW_SHOW);	
+	b4p = (CButton *)GetDlgItem(IDC_BUTTON_P1);
+	if(b[0]) {
+		nResults[1][0] = str2gua(r[nCurrDisplayGroup*2-2], 1, 0);
+		nResults[1][1] = str2gua(r[nCurrDisplayGroup*2-2], 0, 0);
+		b4p->ShowWindow(SW_SHOW);
+	} else b4p->ShowWindow(SW_HIDE);
+	b4p = (CButton *)GetDlgItem(IDC_BUTTON_P2);
+	b4p->ShowWindow(SW_SHOW);	
+	b4p = (CButton *)GetDlgItem(IDC_BUTTON_P3);
+	if(b[1]) {
+		nResults[1][2] = str2gua(r[nCurrDisplayGroup*2-1], 1, 0);
+		nResults[1][3] = str2gua(r[nCurrDisplayGroup*2-1], 0, 0);
+		b4p->ShowWindow(SW_SHOW);
+	} else b4p->ShowWindow(SW_HIDE);
+	{
+		//update group number;
         CEdit groupbox;
         groupbox.Attach(GetDlgItem(IDC_GROUP)->m_hWnd);
         groupbox.SetFont(&m_UNIfont[0],FALSE);
@@ -539,10 +551,6 @@ void CLottery5Dlg::OnBnClickedButtonAction()
         timebox.Detach();
     }
     {
-        //TODO: display gua question.
-
-    }
-    {
         //display gua pics
         //original gua 
 		CStatic * s = NULL;
@@ -576,25 +584,31 @@ void CLottery5Dlg::OnBnClickedButtonAction()
                 );
         }
     }
-    {
-        //display gua title
-        //original gua
-        CString title;
-        CEdit titledit;
-        for(int i=0;i<4;++i)title += SIXTYFOURGUA[eightguas_64index(nResults[0][0], nResults[0][1])*4+i];
-        titledit.Attach(GetDlgItem(IDC_EDIT2)->m_hWnd);titledit.SetWindowText(title);titledit.Detach();title.Empty();
-        for(int i=0;i<4;++i)title += SIXTYFOURGUA[eightguas_64index(nResults[0][2], nResults[0][3])*4+i];
-        titledit.Attach(GetDlgItem(IDC_EDIT14)->m_hWnd);titledit.SetWindowText(title);titledit.Detach();title.Empty();
-        //transformed gua
-        //item 1
-        if(b[0]) 
-            for(int i=0;i<4;++i)title += SIXTYFOURGUA[eightguas_64index(nResults[1][0], nResults[1][1])*4+i];
-        titledit.Attach(GetDlgItem(IDC_EDIT5)->m_hWnd);titledit.SetWindowText(title);titledit.Detach();title.Empty();
-        //item 2
-        if(b[1])
-            for(int i=0;i<4;++i)title += SIXTYFOURGUA[eightguas_64index(nResults[1][2], nResults[1][3])*4+i];
-        titledit.Attach(GetDlgItem(IDC_EDIT15)->m_hWnd);titledit.SetWindowText(title);titledit.Detach();title.Empty();
-    }
+	{
+		//display gua title
+		//original gua
+		CString title;
+		CEdit titledit;
+		iG[0] = eightguas_64index(nResults[0][0], nResults[0][1]);
+		for(int i=0;i<4;++i)title += SIXTYFOURGUA[iG[0]*4+i];
+		titledit.Attach(GetDlgItem(IDC_EDIT2)->m_hWnd);titledit.SetWindowText(title);titledit.Detach();title.Empty();
+		iG[2] = eightguas_64index(nResults[0][2], nResults[0][3]);
+		for(int i=0;i<4;++i)title += SIXTYFOURGUA[iG[2]*4+i];
+		titledit.Attach(GetDlgItem(IDC_EDIT14)->m_hWnd);titledit.SetWindowText(title);titledit.Detach();title.Empty();
+		//transformed gua
+		//item 1
+		if(b[0]){
+			iG[1] = eightguas_64index(nResults[1][0], nResults[1][1]);
+            for(int i=0;i<4;++i)title += SIXTYFOURGUA[iG[1]*4+i];
+		}
+		titledit.Attach(GetDlgItem(IDC_EDIT5)->m_hWnd);titledit.SetWindowText(title);titledit.Detach();title.Empty();
+		//item 2
+		if(b[1]) {
+			iG[3] = eightguas_64index(nResults[1][2], nResults[1][3]);
+			for(int i=0;i<4;++i)title += SIXTYFOURGUA[iG[3]*4+i];
+		}
+		titledit.Attach(GetDlgItem(IDC_EDIT15)->m_hWnd);titledit.SetWindowText(title);titledit.Detach();title.Empty();
+	}
 
     //display gua content
     TCHAR*  l[2][2][6];//第几项的原卦的内容  
@@ -905,104 +919,6 @@ void CLottery5Dlg::Parse8Gua( CString& csGua, int & nIndex0, int & nIndex1 )
         (csGua[5] - _T('1'))*1;
 }
 
-void CLottery5Dlg::AppendGuaContent( CString &csDisplay, CString csForcast )
-{
-    //解析
-    CString csGua1, csGua2;
-    if (TackleShiftGua(csForcast, csGua1, csGua2))
-    {//写出原卦和变卦
-        int iIndex00, iIndex01, iIndex04, iIndex10, iIndex11, iIndex14, iIndex042, iIndex142;
-        Parse8Gua(csGua1, iIndex00, iIndex01);
-        Parse64Gua(csGua1, iIndex04); 
-        Parse64Gua2(csGua1, iIndex042);
-        Parse8Gua(csGua2, iIndex10, iIndex11);
-        Parse64Gua(csGua2, iIndex14);
-        Parse64Gua2(csGua2, iIndex142);
-        //第一行
-        csDisplay += _T("\t\t\t");
-        csDisplay += BXContent[(BXIndex[iIndex042])*6+0];
-        csDisplay += _T("\t\t");
-        csDisplay += BXContent[(BXIndex[iIndex142])*6+0];
-        //第二行
-        csDisplay += _T("\n");
-        for(int i=0;i<4;++i)
-            csDisplay += SIXTYFOURGUA[iIndex04*4+i];
-        csDisplay += _T("\t\t\t");
-        csDisplay += BXContent[(BXIndex[iIndex042])*6+1];
-        csDisplay += _T("\t\t");
-        csDisplay += BXContent[(BXIndex[iIndex142])*6+1];
-        //第三行
-        csDisplay += _T("\n");
-        csDisplay += EIGHTGUA[iIndex00];
-        AddMarker(csDisplay, csForcast[5], csForcast[4], csForcast[3]);
-        csDisplay += _T("\t");
-        csDisplay += EIGHTGUA[iIndex10];
-        csDisplay += _T("\t\t");
-        csDisplay += BXContent[(BXIndex[iIndex042])*6+2];
-        csDisplay += _T("\t\t");
-        csDisplay += BXContent[(BXIndex[iIndex142])*6+2];
-        //第四行
-        csDisplay += _T("\n");
-        csDisplay += EIGHTGUA[iIndex01];
-        AddMarker(csDisplay, csForcast[2], csForcast[1], csForcast[0]);
-        csDisplay += _T("\t");
-        csDisplay += EIGHTGUA[iIndex11];
-        csDisplay += _T("\t\t");
-        csDisplay += BXContent[(BXIndex[iIndex042])*6+3];
-        csDisplay += _T("\t\t");
-        csDisplay += BXContent[(BXIndex[iIndex142])*6+3];
-        //第五行
-        csDisplay += _T("\n");  
-        csDisplay += _T("\t");
-        for(int i=0;i<4;++i)
-            csDisplay += SIXTYFOURGUA[iIndex14*4+i];
-        csDisplay += _T("\t\t");
-        csDisplay += BXContent[(BXIndex[iIndex042])*6+4];
-        csDisplay += _T("\t\t");
-        csDisplay += BXContent[(BXIndex[iIndex142])*6+4];
-        //第六行
-        csDisplay += _T("\n\t\t\t");
-        csDisplay += BXContent[(BXIndex[iIndex042])*6+5];
-        csDisplay += _T("\t\t");
-        csDisplay += BXContent[(BXIndex[iIndex142])*6+5];
-    }
-    else
-    {//无变卦
-        int iIndex00, iIndex01, iIndex04, iIndex042;
-        Parse8Gua(csForcast, iIndex00, iIndex01);
-        Parse64Gua(csForcast, iIndex04);
-        Parse64Gua2(csForcast, iIndex042);
-        //第一行
-        csDisplay += _T("\t");
-        csDisplay += BXContent[(BXIndex[iIndex042])*6+0];
-        //第二行
-        csDisplay += _T("\n");
-        for(int i=0;i<4;++i)
-            csDisplay += SIXTYFOURGUA[iIndex04*4+i];
-        csDisplay += _T("\t");
-        csDisplay += BXContent[(BXIndex[iIndex042])*6+1];
-        //第三行
-        csDisplay += _T("\n");
-        csDisplay += EIGHTGUA[iIndex00];
-        csDisplay += _T("\t");
-        csDisplay += BXContent[(BXIndex[iIndex042])*6+2];
-        //第四行
-        csDisplay += _T("\n");
-        csDisplay += EIGHTGUA[iIndex01];
-        csDisplay += _T("\t");
-        csDisplay += BXContent[(BXIndex[iIndex042])*6+3];
-        //第五行
-        csDisplay += _T("\n");  
-        csDisplay += _T("\t");
-        csDisplay += BXContent[(BXIndex[iIndex042])*6+4];
-        //第六行
-        csDisplay += _T("\n");  
-        csDisplay += _T("\t");
-        csDisplay += BXContent[(BXIndex[iIndex042])*6+5];
-    }
-    csDisplay += _T("\n\n");  
-}
-
 void CLottery5Dlg::OnBnClickedButton2()
 {
     // TODO: Add your control notification handler code here
@@ -1021,41 +937,6 @@ void CLottery5Dlg::OnBnClickedButton2()
         es.pfnCallback = MyStreamOutCallback; 
         pEditRes->StreamOut(SF_RTF, es);
         cFile.Close();
-    }
-}
-
-void CLottery5Dlg::AddMarker(CString& csInput, wchar_t wch0, wchar_t wch1, wchar_t wch2)
-{
-    CString csTemp;
-    int iCum = 0;
-    CHARRANGE cr;
-    if (wch0 == L'0')
-    {  
-        cr.cpMin = csInput.GetLength(), cr.cpMax = cr.cpMin + 1;
-        vCRUpper.Add(cr);
-        csInput += L'x';
-    }
-    if (wch0 == L'3')
-    {  
-        cr.cpMin = csInput.GetLength(), cr.cpMax = cr.cpMin + 1;
-        vCRUpper.Add(cr);
-        csInput += L'o';
-    }
-    if (wch1 == L'0')
-        csInput += L'x';
-    if (wch1 == L'3')
-        csInput += L'o';
-    if (wch2 == L'0')
-    {  
-        cr.cpMin = csInput.GetLength(), cr.cpMax = cr.cpMin + 1;
-        vCRDowner.Add(cr);
-        csInput += L'x';
-    }
-    if (wch2 == L'3')
-    {  
-        cr.cpMin = csInput.GetLength(), cr.cpMax = cr.cpMin + 1;
-        vCRDowner.Add(cr);
-        csInput += L'o';
     }
 }
 
@@ -1078,7 +959,7 @@ void CLottery5Dlg::OnDestroy()
 void CLottery5Dlg::OnBnClickedGroupadd()
 {
     // TODO: Add your control notification handler code here
-    if(nCurrDisplayGroup<3)
+    if(nCurrDisplayGroup<2)
         nCurrDisplayGroup++;
     OnBnClickedButtonAction();
 }
@@ -1120,6 +1001,17 @@ void CLottery5Dlg::OnBnClickedButtonclear()
 		curr.SetWindowText(NULL);
 		curr.Detach();
 	}
+
+	CButton * b4p = (CButton *)GetDlgItem(IDC_BUTTON_P0);
+	b4p = (CButton *)GetDlgItem(IDC_BUTTON_P0);
+	b4p->ShowWindow(SW_HIDE);
+	b4p = (CButton *)GetDlgItem(IDC_BUTTON_P1);
+	b4p->ShowWindow(SW_HIDE);
+	b4p = (CButton *)GetDlgItem(IDC_BUTTON_P2);
+	b4p->ShowWindow(SW_HIDE);
+	b4p = (CButton *)GetDlgItem(IDC_BUTTON_P3);
+	b4p->ShowWindow(SW_HIDE);
+
 	curr.Attach(GetDlgItem(IDC_TIMEBOX)->m_hWnd);curr.SetWindowText(NULL);curr.Detach();
 	curr.Attach(GetDlgItem(IDC_GROUP)->m_hWnd);curr.SetWindowText(NULL);curr.Detach();
 	curr.Attach(GetDlgItem(IDC_EDIT2)->m_hWnd);curr.SetWindowText(NULL);curr.Detach();
@@ -1145,7 +1037,7 @@ void CLottery5Dlg::OnBnClickedButtonRandom()
 	srand(time(0));
 	TCHAR texts[256] = {0};
 	CComboBox edits;
-	for(int i=0;i<6;i++){
+	for(int i=0;i<4;i++){
 		edits.Attach(GetDlgItem(IDC_YAO11+i)->m_hWnd);
 		_stprintf(texts, _T("%d%d%d%d%d%d"), rand()%3, rand()%3, rand()%3, rand()%3, rand()%3, rand()%3); 
 		edits.SetWindowText(texts);
@@ -1300,7 +1192,7 @@ void CLottery5Dlg::OnBnClickedButtonmark()
 		free(pBuffer);
 	}
 }
-void CLottery5Dlg::OnBnClickedButtonbirdview()
+void CLottery5Dlg::OnBnClickedButtonBirdview()
 {
 	// TODO: Add your control notification handler code here
 	BirdView theBirdView;
@@ -1425,8 +1317,11 @@ void CLottery5Dlg::AnalyzeCurrentChosenTarget(double * score)
 
 afx_msg LRESULT CLottery5Dlg::OnParamChanged(WPARAM wparam , LPARAM lparam)
 {
-	// parameters changed
-	OnBnClickedButtonAction();
+	// realtime tweaking needs yao input first
+	CEdit * e = (CEdit *)GetDlgItem(IDC_YAO11);
+	CString s; e->GetWindowText(s);
+	if(s != _T("")) 
+		OnBnClickedButtonAction();
 	return NULL;
 }
 
@@ -1434,5 +1329,33 @@ void CLottery5Dlg::OnBnClickedButtonShowParam()
 {
 	// TODO: Add your control notification handler code here
 	ParameterView v;
+	v.DoModal();
+}
+
+void CLottery5Dlg::OnBnClickedButtonP0()
+{
+	// TODO: Add your control notification handler code here
+	ParameterView v(iG[0]);
+	v.DoModal();
+}
+
+void CLottery5Dlg::OnBnClickedButtonP1()
+{
+	// TODO: Add your control notification handler code here
+	ParameterView v(iG[1]);
+	v.DoModal();
+}
+
+void CLottery5Dlg::OnBnClickedButtonP2()
+{
+	// TODO: Add your control notification handler code here
+	ParameterView v(iG[2]);
+	v.DoModal();
+}
+
+void CLottery5Dlg::OnBnClickedButtonP3()
+{
+	// TODO: Add your control notification handler code here
+	ParameterView v(iG[3]);
 	v.DoModal();
 }

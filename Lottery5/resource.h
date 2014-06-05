@@ -27,6 +27,7 @@
 #define IDC_DATETIMEPICKER4             1007
 #define IDC_EDIT1                       1008
 #define IDC_EDITAUTOMATEINFO            1008
+#define IDC_EDIT_G                      1008
 #define IDC_EDIT2                       1009
 #define IDC_BUTTONACTION                1010
 #define IDC_EDIT13                      1010
@@ -136,6 +137,7 @@
 #define IDC_PROGRESS1                   1095
 #define IDC_PROGRESSAUTOMATE            1095
 #define IDC_SPIN1                       1096
+#define IDC_SPIN_S                      1096
 #define IDC_SPIN2                       1097
 #define IDC_BUTTON1                     1097
 #define IDC_BUTTONSHOWPARAM             1097
@@ -159,6 +161,10 @@
 #define IDC_YAO16                       1106
 #define IDC_SPIN11                      1106
 #define IDC_SPIN12                      1107
+#define IDC_BUTTON_P0                   1107
+#define IDC_BUTTON_P1                   1108
+#define IDC_BUTTON_P2                   1109
+#define IDC_BUTTON_P3                   1110
 #define IDC_EDIT1201                    1201
 #define IDC_EDIT1202                    1202
 #define IDC_EDIT1203                    1203
@@ -310,7 +316,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        140
 #define _APS_NEXT_COMMAND_VALUE         32771
-#define _APS_NEXT_CONTROL_VALUE         1098
+#define _APS_NEXT_CONTROL_VALUE         1108
 #define _APS_NEXT_SYMED_VALUE           104
 #endif
 #endif

@@ -4,7 +4,6 @@
 
 #pragma once
 
-
 // CLottery5Dlg ¶Ô»°¿ò
 class CLottery5Dlg : public CDialog
 {
@@ -36,9 +35,7 @@ public:
     void Parse64Gua2( CString& csGua, int & iIndex4 );
 	bool TackleShiftGua(CString& csGua, CString& csGua1, CString& csGua2);
 	bool IsInputLegit(CString& csInput);
-    void AppendGuaContent(CString &csDisplay, CString csForcast);
     afx_msg void OnBnClickedButton2();
-    void AddMarker(CString& csInput, wchar_t wch0, wchar_t wch1, wchar_t wch2);
     void OnGroupChange();
 
 private:
@@ -66,10 +63,15 @@ public:
 	afx_msg void OnBnClickedButtonRandom();
 	afx_msg void OnBnClickedButtongetonline();
 	afx_msg void OnBnClickedButtonmark();
-	afx_msg void OnBnClickedButtonbirdview();
+	afx_msg void OnBnClickedButtonBirdview();
 	afx_msg void OnBnClickedButtonautomate();
 	// Analyze current chosen target
 	void AnalyzeCurrentChosenTarget(double * score);
 	afx_msg LRESULT OnParamChanged(WPARAM wparam , LPARAM lparam);
 	afx_msg void OnBnClickedButtonShowParam();
+	afx_msg void OnBnClickedButtonP0();
+	int iG[4];
+	afx_msg void OnBnClickedButtonP1();
+	afx_msg void OnBnClickedButtonP2();
+	afx_msg void OnBnClickedButtonP3();
 };

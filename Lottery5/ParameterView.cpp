@@ -7,13 +7,15 @@
 
 extern const TCHAR g_szIni[MAX_PATH];
 extern MyParam g_p[64];
+extern const TCHAR SIXTYFOURGUA[64*4+1];
 // ParameterView dialog
 
 IMPLEMENT_DYNAMIC(ParameterView, CDialog)
 
-ParameterView::ParameterView(CWnd* pParent /*=NULL*/)
+ParameterView::ParameterView(int i, CWnd* pParent /*=NULL*/)
 	: CDialog(ParameterView::IDD, pParent)
 	, m_bInitialized(false)
+	, m_i(i)
 {
 
 }
@@ -102,6 +104,7 @@ BEGIN_MESSAGE_MAP(ParameterView, CDialog)
 	ON_EN_CHANGE(IDC_EDIT1271, &ParameterView::OnEnChangeEdit)
 	ON_EN_CHANGE(IDC_EDIT1272, &ParameterView::OnEnChangeEdit)
 	ON_BN_CLICKED(IDC_BUTTONSAVE, &ParameterView::OnBnClickedButtonSave)
+	ON_EN_CHANGE(IDC_EDIT_G, &ParameterView::OnEnChangeEditG)
 END_MESSAGE_MAP()
 
 
@@ -115,15 +118,21 @@ BOOL ParameterView::OnInitDialog()
 	// set buddy
 	CSpinButtonCtrl * s;
 	CEdit * e;
-	TCHAR c[256];
 	for (int i = 0; i < 12*6; i++) {
-		e = (CEdit *)(GetDlgItem(IDC_EDIT1201 + i));
-		_stprintf(c, _T("%d"), ((unsigned int*)&(g_p[0]))[i]);
-		e->SetWindowText(c);
-		s = (CSpinButtonCtrl *)(GetDlgItem(IDC_SPIN1201 + i));
+		s = (CSpinButtonCtrl *)GetDlgItem(IDC_SPIN1201 + i);
+		e = (CEdit *)GetDlgItem(IDC_EDIT1201 + i);
 		s->SetBuddy(e);
 		s->SetRange(0,100);
 	}
+	s = (CSpinButtonCtrl *)GetDlgItem(IDC_SPIN_S);
+	s->SetRange(0, 64);
+	s->SetPos32(m_i);
+	e = (CEdit *)GetDlgItem(IDC_EDIT_G);
+	TCHAR t[MAX_PATH];
+	_stprintf(t, _T("%d"), m_i);
+	e->SetWindowText(t);
+	s->SetBuddy(e);
+	Refresh();
 	m_bInitialized = true;
 	return TRUE;  // return TRUE unless you set the focus to a control
 	// EXCEPTION: OCX Property Pages should return FALSE
@@ -137,15 +146,15 @@ void ParameterView::OnEnChangeEdit()
 	// with the ENM_CHANGE flag ORed into the mask.
 
 	// TODO:  Add your control notification handler code here
-	
+
 	if(m_bInitialized) {
-		// get current score params		
+		CSpinButtonCtrl * s = (CSpinButtonCtrl *)GetDlgItem(IDC_SPIN_S);
 		CEdit * e = NULL;
 		TCHAR t[256];
 		for (int i = 0; i < 12*6; i++) {
 			e = (CEdit *)(GetDlgItem(IDC_EDIT1201 + i));
 			e->GetWindowText(t, 256);
-			((unsigned int*)&(g_p[0]))[i] = _ttoi(t);
+			((unsigned int*)&(g_p[s->GetPos32()]))[i] = _ttoi(t);
 		}
 		GetParent()->SendMessage(MY_PARAM_MSG, NULL, NULL);
 	}
@@ -172,4 +181,36 @@ void ParameterView::OnBnClickedButtonSave()
 			fclose(pf);
 		} else ASSERT(0);
 	} else ASSERT(0);
+}
+
+void ParameterView::Refresh(void)
+{
+	CEdit * e;
+	TCHAR c[256];
+	CSpinButtonCtrl * s = (CSpinButtonCtrl *)GetDlgItem(IDC_SPIN_S);
+	for (int i = 0; i < 12*6; i++) {
+		e = (CEdit *)GetDlgItem(IDC_EDIT1201 + i);
+		_stprintf(c, _T("%d"), ((unsigned int*)&(g_p[s->GetPos32()]))[i]);
+		e->SetWindowText(c);
+	}
+	TCHAR sz[MAX_PATH];
+	_stprintf(sz, _T(" %d "), m_i);
+	CString t;
+	t += sz;
+	for(int i = 0; i < 4; i++)
+		t += SIXTYFOURGUA[m_i * 4 + i];
+	SetWindowText(t);
+}
+
+void ParameterView::OnEnChangeEditG()
+{
+	// TODO:  If this is a RICHEDIT control, the control will not
+	// send this notification unless you override the CDialog::OnInitDialog()
+	// function and call CRichEditCtrl().SetEventMask()
+	// with the ENM_CHANGE flag ORed into the mask.
+
+	// TODO:  Add your control notification handler code here
+	CSpinButtonCtrl * s = (CSpinButtonCtrl *)GetDlgItem(IDC_SPIN_S);
+	m_i = s->GetPos32();
+	Refresh();
 }

@@ -54,8 +54,8 @@ BEGIN
     "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_CHS)\r\n"
     "LANGUAGE 4, 2\r\n"
     "#pragma code_page(936)\r\n"
-    "#include ""res\\Lottery5.rc2""  // ????ì??ì? Microsoft Visual C++ ???¨???§?§???§????ì??ì?-|??¨??????¨???§|???§?o???\r\n"
-    "#include ""l.CHS\\afxres.rc""      // ???¨???§?§???§?o???¨???§|????¨???§|???§?|?t\r\n"
+    "#include ""res\\Lottery5.rc2""  // ????¨???¨?? Microsoft Visual C++ ????§????ì??ì????ì????¨???¨??-|???§???????§????ì|????ì?o???\r\n"
+    "#include ""l.CHS\\afxres.rc""      // ????§????ì??ì????ì?o????§????ì|?????§????ì|????ì?|?t\r\n"
     "#endif\r\n"
     "\0"
 END
@@ -118,10 +118,10 @@ BEGIN
     EDITTEXT        IDC_TIMEBOX,253,31,392,23,ES_AUTOHSCROLL | ES_READONLY | NOT WS_TABSTOP
     GROUPBOX        "1",IDC_STATIC,245,124,447,126
     EDITTEXT        IDC_EDIT14,254,264,52,22,ES_CENTER | ES_AUTOHSCROLL | ES_READONLY | NOT WS_BORDER | NOT WS_TABSTOP
-    EDITTEXT        IDC_EDIT15,317,353,52,22,ES_CENTER | ES_AUTOHSCROLL | ES_READONLY | NOT WS_BORDER | NOT WS_TABSTOP
+    EDITTEXT        IDC_EDIT15,317,352,52,22,ES_CENTER | ES_AUTOHSCROLL | ES_READONLY | NOT WS_BORDER | NOT WS_TABSTOP
     EDITTEXT        IDC_EDIT16,391,268,127,89,ES_MULTILINE | ES_READONLY | NOT WS_TABSTOP
     EDITTEXT        IDC_EDIT17,520,268,127,89,ES_MULTILINE | ES_READONLY | NOT WS_TABSTOP
-    GROUPBOX        "2",IDC_STATIC,245,254,447,115
+    GROUPBOX        "2",IDC_STATIC,245,254,447,126
     EDITTEXT        IDC_SCORE1,659,154,25,31,ES_MULTILINE | ES_AUTOHSCROLL | ES_READONLY | NOT WS_TABSTOP
     EDITTEXT        IDC_RESULT1,659,190,25,21,ES_AUTOHSCROLL | ES_READONLY | NOT WS_TABSTOP
     EDITTEXT        IDC_SCORE2,659,285,25,31,ES_MULTILINE | ES_AUTOHSCROLL | ES_READONLY | NOT WS_TABSTOP
@@ -184,10 +184,14 @@ BEGIN
     LTEXT           "3D",IDC_STATIC,19,172,13,12,SS_CENTERIMAGE
     EDITTEXT        IDC_EDITISSUE2,32,172,35,12,ES_AUTOHSCROLL | NOT WS_TABSTOP
     LTEXT           "期：",IDC_STATIC,75,172,14,12,SS_CENTERIMAGE
-    EDITTEXT        IDC_EDITINFO,20,373,296,23,ES_AUTOHSCROLL | ES_READONLY | NOT WS_TABSTOP
+    EDITTEXT        IDC_EDITINFO,20,376,222,23,ES_AUTOHSCROLL | ES_READONLY | NOT WS_TABSTOP
     PUSHBUTTON      "总揽",IDC_BUTTONBIRDVIEW,199,230,35,19
     PUSHBUTTON      "自动处理",IDC_BUTTONAUTOMATE,200,262,35,19
-    PUSHBUTTON      "|->",IDC_BUTTONSHOWPARAM,690,378,13,20
+    PUSHBUTTON      "...",IDC_BUTTONSHOWPARAM,690,9,13,12
+    PUSHBUTTON      "...",IDC_BUTTON_P0,304,130,14,8,BS_CENTER | BS_VCENTER | NOT WS_VISIBLE
+    PUSHBUTTON      "...",IDC_BUTTON_P1,369,214,14,8,BS_CENTER | BS_VCENTER | NOT WS_VISIBLE
+    PUSHBUTTON      "...",IDC_BUTTON_P2,305,262,14,8,BS_CENTER | BS_VCENTER | NOT WS_VISIBLE
+    PUSHBUTTON      "...",IDC_BUTTON_P3,369,351,14,8,BS_CENTER | BS_VCENTER | NOT WS_VISIBLE
 END
 
 IDD_BIRDVIEW DIALOGEX 0, 0, 603, 365
@@ -215,7 +219,6 @@ END
 
 IDD_DIALOGPARAM DIALOGEX 0, 0, 434, 170
 STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
-CAPTION "参数配置"
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
     EDITTEXT        IDC_EDIT1201,43,29,32,18,ES_RIGHT | ES_READONLY
@@ -385,6 +388,8 @@ BEGIN
     PUSHBUTTON      "保存",IDC_BUTTONSAVE,75,149,53,14
     PUSHBUTTON      "导入配置文件",IDC_BUTTONIMPORT,208,149,53,14
     PUSHBUTTON      "导出配置文件",IDC_BUTTONEXPORT,341,149,53,14
+    CONTROL         "",IDC_SPIN_S,"msctls_updown32",UDS_SETBUDDYINT | UDS_ALIGNRIGHT | UDS_AUTOBUDDY | UDS_ARROWKEYS,139,145,26,18
+    EDITTEXT        IDC_EDIT_G,7,7,32,18,ES_CENTER | ES_AUTOHSCROLL
 END
 
 
@@ -645,8 +650,8 @@ END
 #if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_CHS)
 LANGUAGE 4, 2
 #pragma code_page(936)
-#include "res\Lottery5.rc2"  // ???§?§? Microsoft Visual C++ ???ì?¨¨??¨???§?§?-|??ì?????ì?¨|??¨?o???
-#include "l.CHS\afxres.rc"      // ???ì?¨¨??¨?o???ì?¨|????ì?¨|??¨?|?t
+#include "res\Lottery5.rc2"  // ????ì??ì? Microsoft Visual C++ ???¨???§?§???§????ì??ì?-|??¨??????¨???§|???§?o???
+#include "l.CHS\afxres.rc"      // ???¨???§?§???§?o???¨???§|????¨???§|???§?|?t
 #endif
 
 /////////////////////////////////////////////////////////////////////////////
